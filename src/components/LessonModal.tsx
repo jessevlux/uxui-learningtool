@@ -2,37 +2,53 @@
 
 import { useState } from "react";
 import { FaTimes } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { lessonCategories } from "@/data/lessons";
+
+interface Lesson {
+  id: string;
+  title: string;
+  completed: boolean;
+  xp: number;
+}
 
 // Dummy data voor lessen
-const getLessons = (moduleId) => {
+const getLessons = (moduleId: number): Lesson[] => {
   switch (moduleId) {
     case 1:
       return [
-        { id: 1, title: "Introductie tot UX", completed: true, xp: 50 },
-        { id: 2, title: "Gebruikersonderzoek", completed: true, xp: 70 },
-        { id: 3, title: "Contrast & Leesbaarheid", completed: false, xp: 60 },
+        { id: "1", title: "Introductie tot UX", completed: true, xp: 50 },
+        { id: "2", title: "Gebruikersonderzoek", completed: true, xp: 70 },
+        { id: "3", title: "Contrast & Leesbaarheid", completed: false, xp: 60 },
         {
-          id: 4,
+          id: "4",
           title: "Navigatie & Informatiearchitectuur",
           completed: false,
           xp: 80,
         },
-        { id: 5, title: "Toegankelijkheid", completed: false, xp: 90 },
+        { id: "5", title: "Toegankelijkheid", completed: false, xp: 90 },
       ];
     case 2:
       return [
-        { id: 1, title: "Kleurtheorie", completed: true, xp: 80 },
-        { id: 2, title: "Typografie", completed: false, xp: 70 },
-        { id: 3, title: "Visual Hierarchy", completed: false, xp: 90 },
-        { id: 4, title: "UI Patterns", completed: false, xp: 100 },
-        { id: 5, title: "Responsive Design", completed: false, xp: 110 },
-        { id: 6, title: "Design Systems", completed: false, xp: 120 },
+        { id: "1", title: "Kleurtheorie", completed: true, xp: 80 },
+        { id: "2", title: "Typografie", completed: false, xp: 70 },
+        { id: "3", title: "Visual Hierarchy", completed: false, xp: 90 },
+        { id: "4", title: "UI Patterns", completed: false, xp: 100 },
+        { id: "5", title: "Responsive Design", completed: false, xp: 110 },
+      ];
+    case 3: // UX Psychology module
+      return [
+        { id: "3-1", title: "Hick's Law", completed: false, xp: 80 },
+        { id: "3-2", title: "Fitts's Law", completed: false, xp: 80 },
+        { id: "3-3", title: "Jakob's Law", completed: false, xp: 80 },
+        { id: "3-4", title: "Miller's Law", completed: false, xp: 80 },
+        { id: "3-5", title: "Peak-End Rule", completed: false, xp: 80 },
       ];
     default:
       return [
-        { id: 1, title: "Les 1", completed: false, xp: 50 },
-        { id: 2, title: "Les 2", completed: false, xp: 60 },
-        { id: 3, title: "Les 3", completed: false, xp: 70 },
+        { id: "1", title: "Les 1", completed: false, xp: 50 },
+        { id: "2", title: "Les 2", completed: false, xp: 60 },
+        { id: "3", title: "Les 3", completed: false, xp: 70 },
       ];
   }
 };
@@ -48,16 +64,13 @@ interface LessonModalProps {
 }
 
 export default function LessonModal({ module, onClose }: LessonModalProps) {
+  const router = useRouter();
   const lessons = getLessons(module.id);
   const [selectedLesson, setSelectedLesson] = useState(null);
 
-  const handleLessonClick = (lesson) => {
-    setSelectedLesson(lesson);
-    // Hier zou je normaal gesproken naar de lespagina navigeren
-    // Voor nu sluiten we gewoon de modal
-    setTimeout(() => {
-      onClose();
-    }, 500);
+  const handleLessonClick = (lesson: Lesson) => {
+    router.push(`/lesson/${module.id}/${lesson.id}`);
+    onClose();
   };
 
   return (
