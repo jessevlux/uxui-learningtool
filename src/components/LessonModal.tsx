@@ -15,34 +15,31 @@ interface Lesson {
 // Dummy data voor lessen
 const getLessons = (moduleId: number): Lesson[] => {
   switch (moduleId) {
-    case 1:
+    case 1: // UX Basics
       return [
-        { id: "1", title: "Introductie tot UX", completed: true, xp: 50 },
-        { id: "2", title: "Gebruikersonderzoek", completed: true, xp: 70 },
-        { id: "3", title: "Contrast & Leesbaarheid", completed: false, xp: 60 },
-        {
-          id: "4",
-          title: "Navigatie & Informatiearchitectuur",
-          completed: false,
-          xp: 80,
-        },
-        { id: "5", title: "Toegankelijkheid", completed: false, xp: 90 },
+        { id: "1-1", title: "Les 1", completed: false, xp: 50 },
+        { id: "1-2", title: "Les 2", completed: false, xp: 60 },
+        { id: "1-3", title: "Les 3", completed: false, xp: 70 },
       ];
-    case 2:
+    case 2: // UI Design
       return [
-        { id: "1", title: "Kleurtheorie", completed: true, xp: 80 },
-        { id: "2", title: "Typografie", completed: false, xp: 70 },
-        { id: "3", title: "Visual Hierarchy", completed: false, xp: 90 },
-        { id: "4", title: "UI Patterns", completed: false, xp: 100 },
-        { id: "5", title: "Responsive Design", completed: false, xp: 110 },
+        { id: "1", title: "Les 1", completed: false, xp: 50 },
+        { id: "2", title: "Les 2", completed: false, xp: 60 },
+        { id: "3", title: "Les 3", completed: false, xp: 70 },
       ];
-    case 3: // UX Psychology module
+    case 3: // UX Psychology
       return [
         { id: "3-1", title: "Hick's Law", completed: false, xp: 80 },
         { id: "3-2", title: "Fitts's Law", completed: false, xp: 80 },
         { id: "3-3", title: "Jakob's Law", completed: false, xp: 80 },
         { id: "3-4", title: "Miller's Law", completed: false, xp: 80 },
         { id: "3-5", title: "Peak-End Rule", completed: false, xp: 80 },
+      ];
+    case 4: // UX Process
+      return [
+        { id: "1", title: "Les 1", completed: false, xp: 50 },
+        { id: "2", title: "Les 2", completed: false, xp: 60 },
+        { id: "3", title: "Les 3", completed: false, xp: 70 },
       ];
     default:
       return [
@@ -75,7 +72,7 @@ export default function LessonModal({ module, onClose }: LessonModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+      <div className="bg-white dark:bg-[#212121] rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
         <div
           className={`bg-gradient-to-r ${module.color} p-4 text-white flex justify-between items-center`}
         >
@@ -101,7 +98,7 @@ export default function LessonModal({ module, onClose }: LessonModalProps) {
                 className={`p-4 rounded-lg border ${
                   lesson.completed
                     ? "border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-800"
-                    : "border-gray-200 bg-white dark:bg-gray-700 dark:border-gray-600"
+                    : "border-gray-200 bg-white dark:bg-[#212121] dark:border-gray-600"
                 } hover:shadow-md transition-shadow cursor-pointer`}
                 onClick={() => handleLessonClick(lesson)}
               >
@@ -111,7 +108,7 @@ export default function LessonModal({ module, onClose }: LessonModalProps) {
                       className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 ${
                         lesson.completed
                           ? "bg-green-500 text-white"
-                          : "bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300"
+                          : "bg-gray-200 dark:bg-[#212121] text-gray-700 dark:text-gray-300"
                       }`}
                     >
                       {lesson.completed ? "✓" : index + 1}

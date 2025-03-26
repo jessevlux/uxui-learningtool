@@ -16,7 +16,7 @@ export default function ClientLessonPage({
   const [error, setError] = useState(false);
 
   return (
-    <main className="flex min-h-screen flex-col bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 dark:text-white p-4">
+    <main className="flex min-h-screen flex-col bg-gradient-to-b from-blue-50 to-white dark:from-[#121212] dark:to-[#181818] dark:text-white p-4">
       <div className="w-full max-w-6xl mx-auto">
         <button
           onClick={() => router.push("/")}

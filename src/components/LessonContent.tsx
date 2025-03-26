@@ -22,8 +22,22 @@ interface ScenarioExample {
   bad: {
     title: string;
     description: string;
-    options: string[];
-    feedback: string;
+    options?: string[];
+    feedback?: string;
+    data?: {
+      version_a: {
+        description: string;
+        conversion_rate: string;
+        avg_time_to_purchase: string;
+        cart_abandonment: string;
+      };
+      version_b: {
+        description: string;
+        conversion_rate: string;
+        avg_time_to_purchase: string;
+        cart_abandonment: string;
+      };
+    };
   };
   good: {
     title: string;
@@ -287,10 +301,53 @@ export default function LessonContent({
   const [availableItems, setAvailableItems] = useState<string[]>([]);
   const [interactiveCorrect, setInteractiveCorrect] = useState(false);
 
-  // Vind de huidige les
-  const currentLesson = Object.values(lessonCategories)
-    .flatMap((category) => category.lessons)
-    .find((lesson) => lesson.id === lessonId);
+  // Zoek de juiste categorie en les op basis van het lessonId
+  const findLesson = () => {
+    // Controleer eerst of het een directe match is
+    for (const categoryKey in lessonCategories) {
+      const category = lessonCategories[categoryKey];
+      for (const lesson of category.lessons) {
+        if (lesson.id === lessonId) {
+          return lesson;
+        }
+      }
+    }
+
+    // Als er geen directe match is, probeer het moduleId te extraheren
+    const moduleIdMatch = lessonId.match(/^(\d+)-/);
+    if (moduleIdMatch) {
+      const moduleId = moduleIdMatch[1];
+      const category = lessonCategories[`ux-${getModuleName(moduleId)}`];
+
+      if (category) {
+        for (const lesson of category.lessons) {
+          if (lesson.id === lessonId) {
+            return lesson;
+          }
+        }
+      }
+    }
+
+    return null;
+  };
+
+  // Helper functie om modulenaam te krijgen
+  const getModuleName = (moduleId: string) => {
+    switch (moduleId) {
+      case "1":
+        return "basics";
+      case "2":
+        return "design";
+      case "3":
+        return "psychology";
+      case "4":
+        return "process";
+      default:
+        return "";
+    }
+  };
+
+  const currentLesson = findLesson();
 
   useEffect(() => {
     // Reset state wanneer we naar een nieuwe stap gaan
@@ -374,163 +431,277 @@ export default function LessonContent({
   };
 
   const renderScenarioExample = (example: ScenarioExample) => {
-    return (
-      <div className="mb-8">
-        <h3 className="text-xl font-medium mb-4">{example.question}</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Optie A - Visuele weergave */}
-          <div
-            className={`bg-white p-6 rounded-lg border-2 cursor-pointer transition-all ${
-              selectedOption === "bad"
-                ? "border-red-500 shadow-md"
-                : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
-            }`}
-            onClick={() => !showFeedback && handleOptionSelect("bad")}
-          >
-            <h4 className="font-medium mb-4">Optie A</h4>
-            <div className="mb-4">
-              <p className="text-gray-700 mb-2">{example.bad.description}</p>
+    // Specifieke check voor zelfscan-kassa voorbeeld
+    const isZelfscanExample = example.question.includes("zelfscan-kassa");
 
-              {/* Verbeterde visuele weergave van telefoon met veel apps */}
-              <div className="border-4 border-gray-800 rounded-3xl p-3 bg-gray-100 max-w-[240px] mx-auto">
-                <div className="h-6 flex justify-center items-center mb-2">
-                  <div className="w-16 h-4 bg-gray-800 rounded-full"></div>
-                </div>
-                <div className="grid grid-cols-4 gap-2 p-2">
-                  {example.bad.options.slice(0, 12).map((option, index) => (
-                    <div
-                      key={index}
-                      className="bg-gradient-to-br from-blue-400 to-blue-500 p-2 rounded-lg text-xs text-center flex flex-col items-center justify-center h-14"
-                    >
-                      {option.includes("Bellen") ? (
-                        <>
-                          <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mb-1">
-                            <FaMobile className="text-white text-xs" />
-                          </div>
-                          <span className="text-white text-[10px]">Bellen</span>
-                        </>
-                      ) : option.includes("WhatsApp") ? (
-                        <>
-                          <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center mb-1">
-                            <FaList className="text-white text-xs" />
-                          </div>
-                          <span className="text-white text-[10px]">
-                            WhatsApp
-                          </span>
-                        </>
-                      ) : option.includes("Instagram") ? (
-                        <>
-                          <div className="w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center mb-1">
-                            <span className="text-white text-[8px]">Insta</span>
-                          </div>
-                          <span className="text-white text-[10px]">
-                            Instagram
-                          </span>
-                        </>
-                      ) : option.includes("Facebook") ? (
-                        <>
-                          <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mb-1">
-                            <span className="text-white text-[8px]">f</span>
-                          </div>
-                          <span className="text-white text-[10px]">
-                            Facebook
-                          </span>
-                        </>
-                      ) : option.includes("Camera") ? (
-                        <>
-                          <div className="w-6 h-6 bg-gray-700 rounded-full flex items-center justify-center mb-1">
-                            <span className="text-white text-[8px]">📷</span>
-                          </div>
-                          <span className="text-white text-[10px]">Camera</span>
-                        </>
-                      ) : (
-                        <>
-                          <div className="w-6 h-6 bg-gray-500 rounded-full flex items-center justify-center mb-1">
-                            <span className="text-white text-[8px]">
-                              {index + 1}
-                            </span>
-                          </div>
-                          <span className="text-white text-[10px]">
-                            {option.length > 8
-                              ? option.substring(0, 6) + ".."
-                              : option}
-                          </span>
-                        </>
-                      )}
-                    </div>
-                  ))}
-                </div>
+    // Vereenvoudigde opties met type check
+    const simplifiedBadOptions: string[] = isZelfscanExample
+      ? [
+          "💳 PIN",
+          "💵 Contant",
+          "💰 Creditcard",
+          "🎁 Cadeaukaart",
+          "➕ Product",
+          "➖ Verwijderen",
+          "🏷️ Kortingscode",
+          "📇 Bonuskaart",
+          "❓ Hulp",
+          "🏠 Terug",
+          "ℹ️ Info",
+          "🌐 Taal",
+          "🔊 Geluid",
+          "🔆 Helderheid",
+          "🔤 Lettergrootte",
+          "🧾 Kassabon",
+          "🛒 Winkelwagen",
+          "💲 Prijscheck",
+          "📞 Klantenservice",
+          "⚠️ Storing",
+          "❌ Afbreken",
+          "🅿️ Parkeren",
+          "🎫 Zegels",
+          "💳 Klantenkaart",
+          "☰ Menu",
+        ]
+      : "options" in example.bad && Array.isArray(example.bad.options)
+      ? (example.bad.options as string[])
+      : [];
+
+    const simplifiedGoodOptions: string[] = isZelfscanExample
+      ? [
+          "💳 BETALEN",
+          "➕ Product",
+          "🏷️ Kortingscode",
+          "❓ Hulp",
+          "🏠 Terug",
+          "☰ Menu",
+        ]
+      : Array.isArray(example.good.options)
+      ? example.good.options
+      : [];
+
+    return (
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-xl font-bold mb-2 text-white">
+            {isZelfscanExample ? "Welke kassa is beter?" : example.question}
+          </h2>
+          <p className="text-gray-300 mb-6">
+            {isZelfscanExample
+              ? "Hick's Law: meer keuzes = langere beslissingstijd"
+              : example.explanation}
+          </p>
+        </div>
+
+        {/* SLECHT VOORBEELD - aanpassing van layout en hoogte */}
+        <div className="border-4 border-gray-700 rounded-lg p-4 mb-4 bg-[#1a1a1a] relative overflow-hidden shadow-lg">
+          {/* Producten lijst met expliciete titel */}
+          <div className="mb-4">
+            <div className="text-xs text-gray-400 mb-2">Producten</div>
+            <div className="border border-gray-700 bg-[#222] p-1 rounded text-xs overflow-hidden">
+              <div className="flex justify-between text-gray-400 mb-1">
+                <span>2x Melk 1L</span>
+                <span>€2,38</span>
+              </div>
+              <div className="flex justify-between text-gray-400 mb-1">
+                <span>1x Brood</span>
+                <span>€2,49</span>
+              </div>
+              <div className="flex justify-between text-gray-400 mb-1">
+                <span>3x Appel</span>
+                <span>€1,47</span>
+              </div>
+              <div className="flex justify-between text-gray-400">
+                <span>1x Kaas 500g</span>
+                <span>€5,99</span>
               </div>
             </div>
-            {showFeedback && selectedOption === "bad" && (
-              <div className="mt-4 bg-red-100 p-3 rounded">
-                <p className="text-sm text-red-700">
-                  <FaTimes className="inline mr-2" />
-                  {example.bad.feedback}
-                </p>
-              </div>
-            )}
           </div>
 
-          {/* Optie B - Verbeterde visuele weergave */}
-          <div
-            className={`bg-white p-6 rounded-lg border-2 cursor-pointer transition-all ${
-              selectedOption === "good"
-                ? "border-green-500 shadow-md"
-                : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
-            }`}
-            onClick={() => !showFeedback && handleOptionSelect("good")}
-          >
-            <h4 className="font-medium mb-4">Optie B</h4>
-            <div className="mb-4">
-              <p className="text-gray-700 mb-2">{example.good.description}</p>
+          {/* Verplaatste totaalbalk met afgeronde hoeken */}
+          <div className="bg-[#333] text-white p-2 mb-4 text-sm rounded-lg flex justify-between">
+            <span>Artikelen: 7</span>
+            <span className="font-bold">€43,28</span>
+          </div>
 
-              {/* Verbeterde visuele weergave van telefoon met weinig apps */}
-              <div className="border-4 border-gray-800 rounded-3xl p-3 bg-gray-100 max-w-[240px] mx-auto">
-                <div className="h-6 flex justify-center items-center mb-2">
-                  <div className="w-16 h-4 bg-gray-800 rounded-full"></div>
-                </div>
-                <div className="grid grid-cols-2 gap-4 p-4">
-                  <div className="bg-red-500 text-white col-span-2 p-3 rounded-lg text-center flex items-center justify-center h-16 shadow-md">
-                    <div className="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-2">
-                      <FaMobile className="text-white text-lg" />
-                    </div>
-                    <span className="font-medium">Bellen</span>
-                  </div>
-                  <div className="bg-blue-500 text-white p-3 rounded-lg text-center flex flex-col items-center justify-center h-16 shadow-md">
-                    <div className="w-6 h-6 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-1">
-                      <FaList className="text-white text-xs" />
-                    </div>
-                    <span>Berichten</span>
-                  </div>
-                  <div className="bg-gray-700 text-white p-3 rounded-lg text-center flex flex-col items-center justify-center h-16 shadow-md">
-                    <div className="w-6 h-6 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-1">
-                      <span className="text-white text-[10px]">📷</span>
-                    </div>
-                    <span>Camera</span>
-                  </div>
-                  <div className="bg-red-600 text-white col-span-2 p-3 rounded-lg text-center flex items-center justify-center h-12 shadow-md">
-                    <div className="w-6 h-6 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-2">
-                      <FaMobile className="text-white text-xs" />
-                    </div>
-                    <span className="font-medium">112 Noodgeval</span>
-                  </div>
-                </div>
+          {/* Product acties Section - onder elkaar */}
+          <div className="mb-3 border-b border-gray-700 pb-3">
+            <div className="text-xs text-gray-400 mb-2">Acties</div>
+            <div className="grid grid-cols-3 gap-2">
+              <div className="border border-blue-700 rounded p-2 text-sm bg-blue-900/20 text-center text-blue-400">
+                ➕ Product
+              </div>
+              <div className="border border-red-700 rounded p-2 text-sm bg-red-900/20 text-center text-red-400">
+                ➖ Verwijderen
+              </div>
+              <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                💲 Prijscheck
+              </div>
+              <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                🛒 Winkelwagen
+              </div>
+              <div className="border border-purple-700 rounded p-2 text-sm bg-purple-900/20 text-center text-purple-400">
+                📇 Bonuskaart
+              </div>
+              <div className="border border-green-700 rounded p-2 text-sm bg-green-900/20 text-center text-green-400">
+                🏷️ Kortingscode
               </div>
             </div>
-            {showFeedback && selectedOption === "good" && (
-              <div className="mt-4 bg-green-100 p-3 rounded">
-                <p className="text-sm text-green-700">
-                  <FaCheck className="inline mr-2" />
-                  {example.good.feedback}
-                </p>
+          </div>
+
+          {/* Betaal Section */}
+          <div className="mb-3 border-b border-gray-700 pb-3">
+            <div className="text-xs text-gray-400 mb-2">Betaalmethoden</div>
+            <div className="grid grid-cols-4 gap-2">
+              <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                💳 PIN
               </div>
-            )}
+              <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                💵 Contant
+              </div>
+              <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                💰 Creditcard
+              </div>
+              <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                🎁 Cadeaukaart
+              </div>
+            </div>
+          </div>
+
+          {/* Overig Section */}
+          <div className="grid grid-cols-4 gap-2">
+            <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+              🧾 Kassabon
+            </div>
+            <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+              ❓ Hulp
+            </div>
+            <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+              🏠 Terug
+            </div>
+            <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+              ⚠️ Storing
+            </div>
+            <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+              🅿️ Parkeren
+            </div>
+            <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+              🌐 Taal
+            </div>
+            <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+              ℹ️ Info
+            </div>
+            <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+              ☰ Menu
+            </div>
           </div>
         </div>
-        {showFeedback && (
-          <div className="mt-4 bg-blue-50 p-4 rounded-lg">
-            <p className="text-gray-800">{example.explanation}</p>
+
+        {/* Feedback sectie voor slecht voorbeeld */}
+        <div className="bg-red-900/30 p-3 rounded border border-red-800 mb-8">
+          <p className="text-gray-200">
+            {isZelfscanExample
+              ? "Probleem: 25 knoppen zonder duidelijke hiërarchie → traag, frustrerend, foutgevoelig"
+              : "feedback" in example.bad
+              ? (example.bad.feedback as string)
+              : "Geen feedback beschikbaar"}
+          </p>
+        </div>
+
+        {/* GOED VOORBEELD - Realistischer zelfscan layout */}
+        <div className="bg-[#2a2a2a] p-6 rounded-lg border border-green-900 mb-8">
+          <h3 className="text-xl font-bold mb-2 text-green-500">
+            {isZelfscanExample ? "Duidelijke hiërarchie" : example.good.title}
+          </h3>
+
+          {isZelfscanExample ? (
+            <div className="border-4 border-gray-700 rounded-lg p-4 mb-4 bg-[#1a1a1a] relative shadow-lg">
+              {/* Productlijst met expliciete titel */}
+              <div className="mb-4">
+                <div className="text-xs text-gray-400 mb-2">Producten</div>
+                <div className="bg-[#222] p-2 rounded border border-gray-700 overflow-hidden">
+                  <div className="flex justify-between text-gray-300 mb-1 text-sm">
+                    <span>2x Melk 1L</span>
+                    <span>€2,38</span>
+                  </div>
+                  <div className="flex justify-between text-gray-300 mb-1 text-sm">
+                    <span>1x Brood</span>
+                    <span>€2,49</span>
+                  </div>
+                  <div className="flex justify-between text-gray-300 mb-1 text-sm">
+                    <span>3x Appel</span>
+                    <span>€1,47</span>
+                  </div>
+                  <div className="flex justify-between text-gray-300 mb-1 text-sm">
+                    <span>1x Kaas 500g</span>
+                    <span>€5,99</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Verplaatste totaalbalk met afgeronde hoeken */}
+              <div className="bg-[#333] text-white p-2 mb-4 text-sm rounded-lg flex justify-between">
+                <span>Artikelen: 7</span>
+                <span className="font-bold">€43,28</span>
+              </div>
+
+              {/* Belangrijkste acties */}
+              <div className="grid grid-cols-2 gap-3 mb-3">
+                <div className="border border-blue-600 rounded-lg py-2 px-3 bg-blue-900/20 text-center text-blue-400 hover:bg-blue-900/30 transition-colors">
+                  ➕ Product toevoegen
+                </div>
+                <div className="border border-blue-600 rounded-lg py-2 px-3 bg-blue-900/20 text-center text-blue-400 hover:bg-blue-900/30 transition-colors">
+                  🏷️ Kortingscode
+                </div>
+              </div>
+
+              {/* Footer met navigatie en betalen */}
+              <div className="flex justify-between items-center">
+                <div className="flex gap-2">
+                  <div className="border border-gray-600 rounded py-2 px-3 bg-gray-800 text-center text-gray-300 hover:bg-gray-700 transition-colors">
+                    ❓ Hulp
+                  </div>
+                  <div className="border border-gray-600 rounded py-2 px-3 bg-gray-800 text-center text-gray-300 hover:bg-gray-700 transition-colors">
+                    ☰ Menu
+                  </div>
+                </div>
+                <div className="border-2 border-green-600 rounded-lg py-2 px-4 bg-green-600 text-white font-bold hover:bg-green-700 transition-colors">
+                  💳 BETALEN
+                </div>
+              </div>
+            </div>
+          ) : (
+            <ul className="list-disc pl-5 mb-4 space-y-2">
+              {simplifiedGoodOptions.map((option, index) => (
+                <li key={index} className="text-gray-300">
+                  {option}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {/* Feedback sectie */}
+          <div className="bg-green-900/30 p-3 rounded border border-green-800">
+            <p className="text-gray-200">
+              {isZelfscanExample
+                ? "Oplossing: 6 knoppen met duidelijke visuele hiërarchie → sneller, minder stress, intuïtief"
+                : "feedback" in example.good
+                ? (example.good.feedback as string)
+                : "Geen feedback beschikbaar"}
+            </p>
+          </div>
+        </div>
+
+        {/* Show feedback button */}
+        {!showFeedback && (
+          <div className="flex justify-end">
+            <button
+              onClick={() => setShowFeedback(true)}
+              className="bg-blue-700 hover:bg-blue-800 text-white px-6 py-2 rounded-lg flex items-center"
+            >
+              <span className="mr-2">Volgende</span>
+              <FaArrowRight />
+            </button>
           </div>
         )}
       </div>
@@ -773,16 +944,20 @@ export default function LessonContent({
 
   if (!currentLesson) {
     return (
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
-        <h1 className="text-2xl font-bold mb-4">Les niet gevonden</h1>
-        <p>De les met ID {lessonId} kon niet worden gevonden.</p>
+      <div className="bg-[#212121] p-6 rounded-xl shadow-lg">
+        <h1 className="text-2xl font-bold mb-4 text-white">
+          Les niet gevonden
+        </h1>
+        <p className="text-gray-300">
+          De les met ID {lessonId} kon niet worden gevonden.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
-      <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
+    <div className="bg-[#212121] p-6 rounded-xl shadow-lg">
+      <h1 className="text-2xl font-bold mb-6 text-white">
         {currentLesson.title}
       </h1>
 

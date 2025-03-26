@@ -8,7 +8,5 @@ export default function LessonPage({
 }: {
   params: { moduleId: string; lessonId: string };
 }) {
-  const formattedLessonId = `${params.moduleId}-${params.lessonId}`;
-
-  return <ClientLessonPage formattedLessonId={formattedLessonId} />;
+  return <ClientLessonPage formattedLessonId={params.lessonId} />;
 }

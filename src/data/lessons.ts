@@ -69,45 +69,6 @@ interface Category {
 }
 
 export const lessonCategories: Record<string, Category> = {
-  "ux-basics": {
-    id: "1",
-    title: "UX Basics",
-    lessons: [
-      {
-        id: "1-1",
-        title: "Introductie tot UX",
-        examples: [
-          {
-            type: "scenario",
-            question: "Welke interface is gebruiksvriendelijker?",
-            explanation: "Een goede UX maakt taken eenvoudig en intuïtief voor gebruikers.",
-            bad: {
-              title: "Onoverzichtelijke Interface",
-              description: "Een website met:",
-              options: [
-                "Inconsistente navigatie",
-                "Kleine, moeilijk leesbare tekst",
-                "Verwarrende labels",
-                "Geen duidelijke hiërarchie"
-              ],
-              feedback: "Een onoverzichtelijke interface frustreert gebruikers en maakt taken onnodig complex."
-            },
-            good: {
-              title: "Gebruiksvriendelijke Interface",
-              description: "Een website met:",
-              options: [
-                "Consistente navigatie",
-                "Duidelijk leesbare tekst",
-                "Intuïtieve labels",
-                "Logische hiërarchie"
-              ],
-              feedback: "Een heldere interface maakt taken eenvoudig en intuïtief voor gebruikers."
-            }
-          }
-        ]
-      }
-    ]
-  },
   "ux-psychology": {
     id: "3",
     title: "UX Psychology",
@@ -118,31 +79,102 @@ export const lessonCategories: Record<string, Category> = {
         examples: [
           {
             type: "scenario",
-            question: "In een noodsituatie, welk startscherm zou snellere actie mogelijk maken?",
-            explanation: "Hick's Law stelt dat de tijd om een beslissing te nemen toeneemt met het aantal keuzemogelijkheden.",
+            question: "Welke zelfscan-kassa interface is effectiever?",
+            explanation: "Hick's Law stelt dat de beslissingstijd toeneemt met het aantal keuzes. Bekijk deze twee zelfscan-kassa interfaces:",
             bad: {
-              title: "Overvol Startscherm",
-              description: "Een startscherm met:",
+              title: "Chaotische Zelfscan Interface",
+              description: "Een zelfscan-kassa met te veel keuzes:",
               options: [
-                "30+ apps verspreid over 4 rijen en 6 kolommen",
-                "Geen logische ordening of hiërarchie",
-                "Kleine, gelijke iconen met felle kleuren",
-                "Belangrijke apps (zoals Bellen) verstopt tussen andere apps",
-                "Scrollen nodig om alle apps te zien"
+                "💳 Betalen met PIN (klein, grijs)",
+                "💵 Betalen met Contant (klein, grijs)",
+                "💰 Betalen met Creditcard (klein, grijs)",
+                "🎁 Betalen met Cadeaukaart (klein, grijs)",
+                "➕ Product toevoegen (klein, blauw)",
+                "➖ Product verwijderen (klein, rood)",
+                "🏷️ Kortingscode invoeren (klein, groen)",
+                "📇 Bonuskaart scannen (klein, paars)",
+                "❓ Hulp vragen (klein, oranje)",
+                "🏠 Terug naar start (klein, grijs)",
+                "ℹ️ Info bekijken (klein, grijs)",
+                "🌐 Taal wijzigen (klein, grijs)",
+                "🔊 Geluid aan/uit (klein, grijs)",
+                "🔆 Helderheid aanpassen (klein, grijs)",
+                "🔤 Lettergrootte (klein, grijs)",
+                "🧾 Kassabon opties (klein, grijs)",
+                "🛒 Winkelwagen bekijken (klein, blauw)",
+                "💲 Prijscheck (klein, grijs)",
+                "📞 Klantenservice bellen (klein, rood)",
+                "⚠️ Storingmelding (klein, oranje)",
+                "❌ Afbreken (klein, rood)",
+                "🅿️ Parkeerkaart (klein, grijs)",
+                "🎫 Zegels sparen (klein, groen)",
+                "💳 Klantenkaart (klein, paars)",
+                "☰ Menu (klein, grijs)"
               ],
-              feedback: "In een stressvolle situatie kost het 5-10 seconden om de juiste app te vinden, met risico op fouten door de cognitieve overbelasting."
+              feedback: "Deze interface heeft 25 knoppen van gelijke grootte, verspreid over het scherm zonder logische ordening. De verschillende kleuren en iconen maken het verwarrend. In een rij met wachtende mensen achter zich, raakt de gebruiker gefrustreerd door de traagheid van het systeem. Dit leidt tot langere afrekentijd, meer frustratie en kans op fouten."
             },
             good: {
-              title: "Gefocust Startscherm",
-              description: "Een minimalistisch startscherm met:",
+              title: "Gestructureerde Zelfscan Interface",
+              description: "Een zelfscan-kassa met duidelijke hiërarchie:",
               options: [
-                "4 grote iconen in een 2x2 raster",
-                "Bellen-app prominent linksboven",
-                "Logisch gegroepeerde essentiële apps (Bellen, Berichten, Kaarten, Camera)",
-                "Duidelijke labels en herkenbare iconen",
-                "Neutrale achtergrond voor betere focus"
+                "💳 BETALEN (groot, groene knop, bovenaan gecentreerd)",
+                "➕ Product toevoegen (middelgroot, blauwe knop, links midden)",
+                "🏷️ Kortingscode invoeren (middelgroot, blauwe knop, rechts midden)",
+                "❓ Hulp vragen (klein, grijze knop, linksonder)",
+                "🏠 Terug naar start (klein, grijze knop, middenonder)",
+                "☰ Menu (klein, grijze knop, rechtsonder)"
               ],
-              feedback: "De gebruiker vindt direct de juiste app (<1 seconde) en maakt zelfs onder stress de juiste keuze door de duidelijke, beperkte opties."
+              feedback: "Deze interface gebruikt duidelijke visuele hiërarchie met slechts 6 knoppen. De 'Betalen' knop is prominent aanwezig en betaalmethodes worden automatisch gedetecteerd. De meest gebruikte functies zijn direct toegankelijk, terwijl minder gebruikte opties in het menu staan. Dit zorgt voor sneller afrekenen, minder stress en intuïtieve bediening."
+            }
+          },
+          {
+            type: "scenario",
+            question: "Welke zelfscan-kassa interface is effectiever?",
+            explanation: "Hick's Law stelt dat de beslissingstijd toeneemt met het aantal keuzes. Bekijk deze twee zelfscan-kassa interfaces:",
+            bad: {
+              title: "Chaotische Zelfscan Interface",
+              description: "Een zelfscan-kassa met te veel keuzes:",
+              options: [
+                "💳 Betalen met PIN (klein, grijs)",
+                "💵 Betalen met Contant (klein, grijs)",
+                "💰 Betalen met Creditcard (klein, grijs)",
+                "🎁 Betalen met Cadeaukaart (klein, grijs)",
+                "➕ Product toevoegen (klein, blauw)",
+                "➖ Product verwijderen (klein, rood)",
+                "🏷️ Kortingscode invoeren (klein, groen)",
+                "📇 Bonuskaart scannen (klein, paars)",
+                "❓ Hulp vragen (klein, oranje)",
+                "🏠 Terug naar start (klein, grijs)",
+                "ℹ️ Info bekijken (klein, grijs)",
+                "🌐 Taal wijzigen (klein, grijs)",
+                "🔊 Geluid aan/uit (klein, grijs)",
+                "🔆 Helderheid aanpassen (klein, grijs)",
+                "🔤 Lettergrootte (klein, grijs)",
+                "🧾 Kassabon opties (klein, grijs)",
+                "🛒 Winkelwagen bekijken (klein, blauw)",
+                "💲 Prijscheck (klein, grijs)",
+                "📞 Klantenservice bellen (klein, rood)",
+                "⚠️ Storingmelding (klein, oranje)",
+                "❌ Afbreken (klein, rood)",
+                "🅿️ Parkeerkaart (klein, grijs)",
+                "🎫 Zegels sparen (klein, groen)",
+                "💳 Klantenkaart (klein, paars)",
+                "☰ Menu (klein, grijs)"
+              ],
+              feedback: "Deze interface heeft 25 knoppen van gelijke grootte, verspreid over het scherm zonder logische ordening. De verschillende kleuren en iconen maken het verwarrend. In een rij met wachtende mensen achter zich, raakt de gebruiker gefrustreerd door de traagheid van het systeem. Dit leidt tot langere afrekentijd, meer frustratie en kans op fouten."
+            },
+            good: {
+              title: "Gestructureerde Zelfscan Interface",
+              description: "Een zelfscan-kassa met duidelijke hiërarchie:",
+              options: [
+                "💳 BETALEN (groot, groene knop, bovenaan gecentreerd)",
+                "➕ Product toevoegen (middelgroot, blauwe knop, links midden)",
+                "🏷️ Kortingscode invoeren (middelgroot, blauwe knop, rechts midden)",
+                "❓ Hulp vragen (klein, grijze knop, linksonder)",
+                "🏠 Terug naar start (klein, grijze knop, middenonder)",
+                "☰ Menu (klein, grijze knop, rechtsonder)"
+              ],
+              feedback: "Deze interface gebruikt duidelijke visuele hiërarchie met slechts 6 knoppen. De 'Betalen' knop is prominent aanwezig en betaalmethodes worden automatisch gedetecteerd. De meest gebruikte functies zijn direct toegankelijk, terwijl minder gebruikte opties in het menu staan. Dit zorgt voor sneller afrekenen, minder stress en intuïtieve bediening."
             }
           }
         ]
@@ -181,37 +213,34 @@ export const lessonCategories: Record<string, Category> = {
         ]
       },
       {
-        id: "3-3-1",
-        title: "Hick's Law",
+        id: "3-3",
+        title: "Jakob's Law",
         examples: [
           {
             type: "scenario",
-            question: "In een noodsituatie, welk startscherm zou snellere actie mogelijk maken?",
-            explanation: "Hick's Law stelt dat de tijd om een beslissing te nemen toeneemt met het aantal keuzemogelijkheden.",
+            question: "Welke gebruikerservaring zal een betere indruk achterlaten?",
+            explanation: "De Peak-End Rule stelt dat mensen een ervaring vooral beoordelen op basis van het hoogtepunt en het einde.",
             bad: {
-              title: "Te Veel Keuzes (Slechte UX)",
-              description: "Een volgepakt startscherm met:",
+              title: "Standaard Checkout",
+              description: "Een webshop checkout die eindigt met:",
               options: [
-                "30+ app-iconen verspreid over 4 rijen en 6 kolommen",
-                "Apps zonder ordening (WhatsApp, Instagram, Spotify, YouTube, etc.)",
-                "Bel-app verstopt tussen andere apps",
-                "Kleine, gelijke iconen zonder visuele hiërarchie",
-                "Felle, contrasterende app-kleuren die afleiden",
-                "Scrollen nodig om alle apps te zien"
+                "Zakelijke bevestigingspagina",
+                "Geen persoonlijke boodschap",
+                "Geen suggesties voor volgende stappen",
+                "Abrupte afsluiting"
               ],
-              feedback: "De gebruiker verliest 5-10 seconden met zoeken, heeft meer kans op fouten (zoals per ongeluk WhatsApp openen), en raakt overweldigd door cognitieve overload in stressvolle situaties."
+              feedback: "Een neutrale afsluiting laat geen blijvende indruk achter."
             },
             good: {
-              title: "Minder Keuzes, Snellere Actie (Goede UX)",
-              description: "Een minimalistisch startscherm met:",
+              title: "Memorabele Checkout",
+              description: "Een webshop checkout die eindigt met:",
               options: [
-                "4 grote iconen in een 2x2 raster voor snelle toegang",
-                "Bellen-app prominent linksboven als grootste icoon",
-                "Logisch gegroepeerde essentiële apps (Bellen, Berichten, Kaarten, Camera)",
-                "Grote, herkenbare iconen met duidelijke labels",
-                "Neutrale achtergrondkleur voor minimale afleiding"
+                "Persoonlijk bedankje met naam",
+                "Korte animatie of beloning",
+                "Duidelijke vervolgstappen",
+                "Kleine verrassing (kortingscode)"
               ],
-              feedback: "De gebruiker vindt direct de juiste app (<1 seconde), blijft gefocust onder stress, en maakt intuïtief de juiste keuze door de duidelijke, beperkte opties."
+              feedback: "Een positief einde creëert een blijvende goede herinnering."
             }
           }
         ]

@@ -9,37 +9,40 @@ import { FaMoon, FaSun, FaFire, FaTrophy, FaUser } from "react-icons/fa";
 // Dummy data voor de modules
 const modules = [
   {
+    id: 3,
+    title: "UX Psychology",
+    description: "Begrijp hoe gebruikers denken en beslissingen nemen",
+    progress: 0,
+    lessons: 5,
+    lessonsCompleted: 0,
+    xp: 0,
+    icon: "🧩",
+    color: "from-green-500 to-teal-600",
+    locked: false,
+  },
+  {
     id: 1,
     title: "UX Basics",
     description: "Leer de fundamentele principes van User Experience design",
-    progress: 40,
+    progress: 0,
     lessons: 5,
-    lessonsCompleted: 2,
-    xp: 120,
+    lessonsCompleted: 0,
+    xp: 0,
     icon: "🧠",
     color: "from-purple-500 to-indigo-600",
+    locked: true,
   },
   {
     id: 2,
     title: "UI Design",
     description: "Ontdek hoe je aantrekkelijke en functionele interfaces maakt",
-    progress: 20,
-    lessons: 6,
-    lessonsCompleted: 1,
-    xp: 80,
-    icon: "🎨",
-    color: "from-blue-500 to-cyan-600",
-  },
-  {
-    id: 3,
-    title: "UX Psychology",
-    description: "Begrijp hoe gebruikers denken en beslissingen nemen",
     progress: 0,
-    lessons: 4,
+    lessons: 5,
     lessonsCompleted: 0,
     xp: 0,
-    icon: "🧩",
-    color: "from-green-500 to-teal-600",
+    icon: "🎨",
+    color: "from-blue-500 to-cyan-600",
+    locked: true,
   },
   {
     id: 4,
@@ -51,6 +54,7 @@ const modules = [
     xp: 0,
     icon: "🔄",
     color: "from-orange-500 to-amber-600",
+    locked: true,
   },
 ];
 
@@ -71,39 +75,72 @@ const userData = {
   ],
 };
 
-export default function Dashboard() {
+// Definieer een interface voor het module type
+interface Module {
+  id: number;
+  title: string;
+  description: string;
+  progress: number;
+  lessons: number;
+  lessonsCompleted: number;
+  xp: number;
+  icon: string;
+  color: string;
+}
+
+interface DashboardProps {
+  onDarkModeChange?: (isDark: boolean) => void;
+}
+
+export default function Dashboard({ onDarkModeChange }: DashboardProps) {
   const [darkMode, setDarkMode] = useState(false);
   const [showLessonModal, setShowLessonModal] = useState(false);
-  const [selectedModule, setSelectedModule] = useState(null);
+  const [selectedModule, setSelectedModule] = useState<Module | null>(null);
 
   // Toggle dark mode
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    if (!darkMode) {
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+
+    // Update HTML class
+    if (newDarkMode) {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
+    }
+
+    // Call the parent component's callback if provided
+    if (onDarkModeChange) {
+      onDarkModeChange(newDarkMode);
     }
   };
 
   // Effect voor het instellen van dark mode op basis van systeemvoorkeur
   useEffect(() => {
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+
+    if (prefersDark) {
       setDarkMode(true);
       document.documentElement.classList.add("dark");
     }
   }, []);
 
-  const handleModuleClick = (moduleId) => {
+  const handleModuleClick = (moduleId: number) => {
     const module = modules.find((m) => m.id === moduleId);
-    setSelectedModule(module);
-    setShowLessonModal(true);
+    if (module) {
+      setSelectedModule(module);
+      setShowLessonModal(true);
+    }
   };
 
   const handleContinueLastLesson = () => {
     const module = modules.find((m) => m.id === userData.lastLesson.moduleId);
-    setSelectedModule(module);
-    setShowLessonModal(true);
+    if (module) {
+      setSelectedModule(module);
+      setShowLessonModal(true);
+    }
   };
 
   return (
@@ -117,17 +154,7 @@ export default function Dashboard() {
           <h1 className="text-xl font-bold">UX/UI Learning</h1>
         </div>
         <div className="flex items-center space-x-4">
-          <button
-            onClick={toggleDarkMode}
-            className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
-          >
-            {darkMode ? (
-              <FaSun className="text-yellow-400" />
-            ) : (
-              <FaMoon className="text-blue-800" />
-            )}
-          </button>
-          <button className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+          <button className="p-2 rounded-full bg-gray-100 dark:bg-[#212121] text-gray-800 dark:text-gray-200">
             <FaUser />
           </button>
         </div>
@@ -138,7 +165,7 @@ export default function Dashboard() {
         <h2 className="text-2xl font-bold mb-2">
           Welkom terug, {userData.name}!
         </h2>
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-6">
+        <div className="bg-white dark:bg-[#212121] rounded-xl shadow-md p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <div>
               <p className="text-gray-600 dark:text-gray-300 mb-1">
@@ -167,7 +194,7 @@ export default function Dashboard() {
                 {Math.round((userData.xp / 300) * 100)}%
               </span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+            <div className="w-full bg-gray-200 dark:bg-[#121212] rounded-full h-2.5">
               <div
                 className="bg-gradient-to-r from-blue-500 to-purple-600 h-2.5 rounded-full"
                 style={{ width: `${(userData.xp / 300) * 100}%` }}
@@ -209,13 +236,13 @@ export default function Dashboard() {
           {userData.badges.map((badge) => (
             <div
               key={badge.id}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 flex flex-col items-center"
+              className="bg-white dark:bg-[#212121] rounded-lg shadow-md p-4 flex flex-col items-center"
             >
               <div className="text-3xl mb-2">{badge.icon}</div>
               <span className="font-medium text-sm">{badge.name}</span>
             </div>
           ))}
-          <div className="bg-gray-100 dark:bg-gray-700 rounded-lg shadow-md p-4 flex flex-col items-center border-2 border-dashed border-gray-300 dark:border-gray-600">
+          <div className="bg-gray-100 dark:bg-[#212121] rounded-lg shadow-md p-4 flex flex-col items-center border-2 border-dashed border-gray-300 dark:border-gray-600">
             <div className="text-3xl mb-2 text-gray-400">?</div>
             <span className="font-medium text-sm text-gray-500 dark:text-gray-400">
               Volgende badge
