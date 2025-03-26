@@ -493,146 +493,31 @@ export default function LessonContent({
           </p>
         </div>
 
-        {/* SLECHT VOORBEELD - aanpassing van layout en hoogte */}
-        <div className="border-4 border-gray-700 rounded-lg p-4 mb-4 bg-[#1a1a1a] relative overflow-hidden shadow-lg">
-          {/* Producten lijst met expliciete titel */}
-          <div className="mb-4">
-            <div className="text-xs text-gray-400 mb-2">Producten</div>
-            <div className="border border-gray-700 bg-[#222] p-1 rounded text-xs overflow-hidden">
-              <div className="flex justify-between text-gray-400 mb-1">
-                <span>2x Melk 1L</span>
-                <span>€2,38</span>
-              </div>
-              <div className="flex justify-between text-gray-400 mb-1">
-                <span>1x Brood</span>
-                <span>€2,49</span>
-              </div>
-              <div className="flex justify-between text-gray-400 mb-1">
-                <span>3x Appel</span>
-                <span>€1,47</span>
-              </div>
-              <div className="flex justify-between text-gray-400">
-                <span>1x Kaas 500g</span>
-                <span>€5,99</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Verplaatste totaalbalk met afgeronde hoeken */}
-          <div className="bg-[#333] text-white p-2 mb-4 text-sm rounded-lg flex justify-between">
-            <span>Artikelen: 7</span>
-            <span className="font-bold">€43,28</span>
-          </div>
-
-          {/* Product acties Section - onder elkaar */}
-          <div className="mb-3 border-b border-gray-700 pb-3">
-            <div className="text-xs text-gray-400 mb-2">Acties</div>
-            <div className="grid grid-cols-3 gap-2">
-              <div className="border border-blue-700 rounded p-2 text-sm bg-blue-900/20 text-center text-blue-400">
-                ➕ Product
-              </div>
-              <div className="border border-red-700 rounded p-2 text-sm bg-red-900/20 text-center text-red-400">
-                ➖ Verwijderen
-              </div>
-              <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
-                💲 Prijscheck
-              </div>
-              <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
-                🛒 Winkelwagen
-              </div>
-              <div className="border border-purple-700 rounded p-2 text-sm bg-purple-900/20 text-center text-purple-400">
-                📇 Bonuskaart
-              </div>
-              <div className="border border-green-700 rounded p-2 text-sm bg-green-900/20 text-center text-green-400">
-                🏷️ Kortingscode
-              </div>
-            </div>
-          </div>
-
-          {/* Betaal Section */}
-          <div className="mb-3 border-b border-gray-700 pb-3">
-            <div className="text-xs text-gray-400 mb-2">Betaalmethoden</div>
-            <div className="grid grid-cols-4 gap-2">
-              <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
-                💳 PIN
-              </div>
-              <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
-                💵 Contant
-              </div>
-              <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
-                💰 Creditcard
-              </div>
-              <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
-                🎁 Cadeaukaart
-              </div>
-            </div>
-          </div>
-
-          {/* Overig Section */}
-          <div className="grid grid-cols-4 gap-2">
-            <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
-              🧾 Kassabon
-            </div>
-            <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
-              ❓ Hulp
-            </div>
-            <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
-              🏠 Terug
-            </div>
-            <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
-              ⚠️ Storing
-            </div>
-            <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
-              🅿️ Parkeren
-            </div>
-            <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
-              🌐 Taal
-            </div>
-            <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
-              ℹ️ Info
-            </div>
-            <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
-              ☰ Menu
-            </div>
-          </div>
-        </div>
-
-        {/* Feedback sectie voor slecht voorbeeld */}
-        <div className="bg-red-900/30 p-3 rounded border border-red-800 mb-8">
-          <p className="text-gray-200">
-            {isZelfscanExample
-              ? "Probleem: 25 knoppen zonder duidelijke hiërarchie → traag, frustrerend, foutgevoelig"
-              : "feedback" in example.bad
-              ? (example.bad.feedback as string)
-              : "Geen feedback beschikbaar"}
-          </p>
-        </div>
-
-        {/* GOED VOORBEELD - Realistischer zelfscan layout */}
-        <div className="bg-[#2a2a2a] p-6 rounded-lg border border-green-900 mb-8">
-          <h3 className="text-xl font-bold mb-2 text-green-500">
-            {isZelfscanExample ? "Duidelijke hiërarchie" : example.good.title}
+        {/* SLECHT VOORBEELD - in container met rode rand en titel */}
+        <div className="bg-[#2a2a2a] p-6 rounded-lg border border-red-900 mb-8">
+          <h3 className="text-xl font-bold mb-2 text-red-500">
+            {isZelfscanExample ? "Te veel keuzes" : example.bad.title}
           </h3>
 
           {isZelfscanExample ? (
-            <div className="border-4 border-gray-700 rounded-lg p-4 mb-4 bg-[#1a1a1a] relative shadow-lg">
-              {/* Productlijst met expliciete titel */}
+            <div className="border-4 border-gray-700 rounded-lg p-4 mb-4 bg-[#1a1a1a] relative overflow-hidden shadow-lg">
+              {/* Producten lijst met expliciete titel */}
               <div className="mb-4">
                 <div className="text-xs text-gray-400 mb-2">Producten</div>
-                <div className="bg-[#222] p-2 rounded border border-gray-700 overflow-hidden">
-                  <div className="flex justify-between text-gray-300 mb-1 text-sm">
+                <div className="border border-gray-700 bg-[#222] p-1 rounded text-xs overflow-hidden">
+                  <div className="flex justify-between text-gray-400 mb-1">
                     <span>2x Melk 1L</span>
                     <span>€2,38</span>
                   </div>
-                  <div className="flex justify-between text-gray-300 mb-1 text-sm">
+                  <div className="flex justify-between text-gray-400 mb-1">
                     <span>1x Brood</span>
                     <span>€2,49</span>
                   </div>
-                  <div className="flex justify-between text-gray-300 mb-1 text-sm">
+                  <div className="flex justify-between text-gray-400 mb-1">
                     <span>3x Appel</span>
                     <span>€1,47</span>
                   </div>
-                  <div className="flex justify-between text-gray-300 mb-1 text-sm">
+                  <div className="flex justify-between text-gray-400">
                     <span>1x Kaas 500g</span>
                     <span>€5,99</span>
                   </div>
@@ -645,8 +530,141 @@ export default function LessonContent({
                 <span className="font-bold">€43,28</span>
               </div>
 
-              {/* Belangrijkste acties */}
-              <div className="grid grid-cols-2 gap-3 mb-3">
+              {/* Product acties Section - onder elkaar */}
+              <div className="mb-3 border-b border-gray-700 pb-3">
+                <div className="text-xs text-gray-400 mb-2">Acties</div>
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="border border-blue-700 rounded p-2 text-sm bg-blue-900/20 text-center text-blue-400">
+                    ➕ Product
+                  </div>
+                  <div className="border border-red-700 rounded p-2 text-sm bg-red-900/20 text-center text-red-400">
+                    ➖ Verwijderen
+                  </div>
+                  <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                    💲 Prijscheck
+                  </div>
+                  <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                    🛒 Winkelwagen
+                  </div>
+                  <div className="border border-purple-700 rounded p-2 text-sm bg-purple-900/20 text-center text-purple-400">
+                    📇 Bonuskaart
+                  </div>
+                  <div className="border border-green-700 rounded p-2 text-sm bg-green-900/20 text-center text-green-400">
+                    🏷️ Kortingscode
+                  </div>
+                </div>
+              </div>
+
+              {/* Betaal Section */}
+              <div className="mb-3 border-b border-gray-700 pb-3">
+                <div className="text-xs text-gray-400 mb-2">Betaalmethoden</div>
+                <div className="grid grid-cols-4 gap-2">
+                  <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                    💳 PIN
+                  </div>
+                  <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                    💵 Contant
+                  </div>
+                  <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                    💰 Creditcard
+                  </div>
+                  <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                    🎁 Cadeaukaart
+                  </div>
+                </div>
+              </div>
+
+              {/* Overig Section */}
+              <div className="grid grid-cols-4 gap-2">
+                <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                  🧾 Kassabon
+                </div>
+                <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                  ❓ Hulp
+                </div>
+                <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                  🏠 Terug
+                </div>
+                <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                  ⚠️ Storing
+                </div>
+                <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                  🅿️ Parkeren
+                </div>
+                <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                  🌐 Taal
+                </div>
+                <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                  ℹ️ Info
+                </div>
+                <div className="border border-gray-600 rounded p-2 text-sm bg-[#333] text-center text-gray-300">
+                  ☰ Menu
+                </div>
+              </div>
+            </div>
+          ) : (
+            <ul className="list-disc pl-5 mb-4 space-y-2">
+              {simplifiedBadOptions.map((option, index) => (
+                <li key={index} className="text-gray-300">
+                  {option}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {/* Feedback sectie */}
+          <div className="bg-red-900/30 p-3 rounded border border-red-800">
+            <p className="text-gray-200">
+              {isZelfscanExample
+                ? "Probleem: 25 knoppen zonder duidelijke hiërarchie → traag, frustrerend, foutgevoelig"
+                : "feedback" in example.bad
+                ? (example.bad.feedback as string)
+                : "Geen feedback beschikbaar"}
+            </p>
+          </div>
+        </div>
+
+        {/* GOED VOORBEELD - aanpassing voor consistente hoogte */}
+        <div className="bg-[#2a2a2a] p-6 rounded-lg border border-green-900 mb-8">
+          <h3 className="text-xl font-bold mb-2 text-green-500">
+            {isZelfscanExample ? "Duidelijke hiërarchie" : example.good.title}
+          </h3>
+
+          {isZelfscanExample ? (
+            <div className="border-4 border-gray-700 rounded-lg p-4 mb-4 bg-[#1a1a1a] relative shadow-lg">
+              {/* Productlijst met expliciete titel en meer ruimte voor consistente hoogte */}
+              <div className="mb-4">
+                <div className="text-xs text-gray-400 mb-2">Producten</div>
+                <div
+                  className="bg-[#222] p-2 rounded border border-gray-700 overflow-hidden"
+                  style={{ minHeight: "120px" }}
+                >
+                  <div className="flex justify-between text-gray-300 mb-2 text-sm">
+                    <span>2x Melk 1L</span>
+                    <span>€2,38</span>
+                  </div>
+                  <div className="flex justify-between text-gray-300 mb-2 text-sm">
+                    <span>1x Brood</span>
+                    <span>€2,49</span>
+                  </div>
+                  <div className="flex justify-between text-gray-300 mb-2 text-sm">
+                    <span>3x Appel</span>
+                    <span>€1,47</span>
+                  </div>
+                  <div className="flex justify-between text-gray-300 mb-2 text-sm">
+                    <span>1x Kaas 500g</span>
+                    <span>€5,99</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Verplaatste totaalbalk met afgeronde hoeken */}
+              <div className="bg-[#333] text-white p-2 mb-4 text-sm rounded-lg flex justify-between">
+                <span>Artikelen: 7</span>
+                <span className="font-bold">€43,28</span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 mb-4">
                 <div className="border border-blue-600 rounded-lg py-2 px-3 bg-blue-900/20 text-center text-blue-400 hover:bg-blue-900/30 transition-colors">
                   ➕ Product toevoegen
                 </div>
@@ -655,7 +673,6 @@ export default function LessonContent({
                 </div>
               </div>
 
-              {/* Footer met navigatie en betalen */}
               <div className="flex justify-between items-center">
                 <div className="flex gap-2">
                   <div className="border border-gray-600 rounded py-2 px-3 bg-gray-800 text-center text-gray-300 hover:bg-gray-700 transition-colors">
