@@ -111,7 +111,7 @@ export const lessonCategories: Record<string, Category> = {
                 "💳 Klantenkaart (klein, paars)",
                 "☰ Menu (klein, grijs)"
               ],
-              feedback: "Deze interface heeft 25 knoppen van gelijke grootte, verspreid over het scherm zonder logische ordening. De verschillende kleuren en iconen maken het verwarrend. In een rij met wachtende mensen achter zich, raakt de gebruiker gefrustreerd door de traagheid van het systeem. Dit leidt tot langere afrekentijd, meer frustratie en kans op fouten."
+              feedback: "Deze interface heeft 25 knoppen van gelijke grootte, verspreid over het scherm. De verschillende kleuren en iconen maken het verwarrend. In een rij met wachtende mensen achter zich, raakt de gebruiker gefrustreerd door de traagheid van het systeem. Dit leidt tot langere afrekentijd, meer frustratie en kans op fouten."
             },
             good: {
               title: "Gestructureerde Zelfscan Interface",
