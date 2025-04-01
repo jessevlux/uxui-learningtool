@@ -21,7 +21,10 @@ interface InteractiveExample {
   task: string;
   description: string;
   items: string[];
-  categories: string[];
+  categories: {
+    name: string;
+    description: string;
+  }[];
   solution: Record<string, string[]>;
   feedback: {
     correct: string;
@@ -170,6 +173,84 @@ export const lessonCategories: Record<string, Category> = {
                 "Prominente zoekbalk in de navigatie"
               ],
               feedback: "Deze navigatiebalk bevat slechts 5 hoofdcategorieën met duidelijke visuele hiërarchie. De belangrijkste opties zijn vetgedrukt en contrasterend, terwijl minder belangrijke opties in submenu's zijn geplaatst. Elk submenu bevat maximaal 6 opties, wat binnen de cognitieve belastingslimiet valt. Het menu blijft open na klikken, wat gebruikers de tijd geeft om keuzes te maken. De prominente zoekbalk biedt directe toegang voor doelgerichte gebruikers. Dit resulteert in snellere navigatie, minder frustratie en hogere conversies."
+            }
+          },
+          {
+            type: "interactive",
+            question: "Optimaliseer de instellingenpagina van deze app",
+            explanation: "Pas Hick's Law toe om deze overvolle instellingenpagina te verbeteren door items te groeperen in logische categorieën.",
+            items: [
+              "Account gegevens", 
+              "Wachtwoord wijzigen",
+              "E-mail adres wijzigen",
+              "Profielfoto",
+              "Privacyinstellingen", 
+              "Zichtbaarheid profiel", 
+              "Gegevens downloaden",
+              "Account verwijderen",
+              "Pushmeldingen", 
+              "E-mailnotificaties", 
+              "SMS-meldingen",
+              "Stille modus",
+              "Taal instellen", 
+              "Thema wijzigen", 
+              "Tekstgrootte",
+              "Contrast",
+              "Betaalmethodes", 
+              "Factureringsgeschiedenis", 
+              "Abonnementen",
+              "Kortingscodes",
+              "Apparaatbeheer", 
+              "Verbindingen", 
+              "Bluetooth",
+              "Wifi-instellingen",
+              "Helpcentrum", 
+              "Feedback geven", 
+              "Veelgestelde vragen",
+              "Contact opnemen"
+            ],
+            categories: [
+              {
+                name: "Account",
+                description: "Persoonlijke accountgegevens en -instellingen"
+              },
+              {
+                name: "Privacy & Beveiliging",
+                description: "Instellingen voor uw privacy en veiligheid"
+              },
+              {
+                name: "Meldingen",
+                description: "Beheer hoe en wanneer u meldingen ontvangt"
+              },
+              {
+                name: "Weergave",
+                description: "Pas het uiterlijk van de app aan"
+              },
+              {
+                name: "Betaling & Abonnementen",
+                description: "Financiële instellingen en abonnementsbeheer"
+              },
+              {
+                name: "Apparaat & Connectiviteit",
+                description: "Apparaat- en verbindingsinstellingen"
+              },
+              {
+                name: "Ondersteuning",
+                description: "Hulp en ondersteuning"
+              }
+            ],
+            solution: {
+              "Account": ["Account gegevens", "Wachtwoord wijzigen", "E-mail adres wijzigen", "Profielfoto"],
+              "Privacy & Beveiliging": ["Privacyinstellingen", "Zichtbaarheid profiel", "Gegevens downloaden", "Account verwijderen"],
+              "Meldingen": ["Pushmeldingen", "E-mailnotificaties", "SMS-meldingen", "Stille modus"],
+              "Weergave": ["Taal instellen", "Thema wijzigen", "Tekstgrootte", "Contrast"],
+              "Betaling & Abonnementen": ["Betaalmethodes", "Factureringsgeschiedenis", "Abonnementen", "Kortingscodes"],
+              "Apparaat & Connectiviteit": ["Apparaatbeheer", "Verbindingen", "Bluetooth", "Wifi-instellingen"],
+              "Ondersteuning": ["Helpcentrum", "Feedback geven", "Veelgestelde vragen", "Contact opnemen"]
+            },
+            feedback: {
+              correct: "Uitstekend! Door de 28 instellingen te groeperen in 7 logische categorieën, heb je de cognitieve belasting verminderd. De gebruiker hoeft nu eerst maar uit 7 opties te kiezen in plaats van uit 28. Binnen elke categorie zijn de opties ook beperkt tot 4 items, wat binnen de aanbevolen limiet van 7±2 valt. Deze toepassing van Hick's Law maakt de interface veel gebruiksvriendelijker en versnelt de beslissingstijd.",
+              incorrect: "Je bent op de goede weg, maar sommige items staan nog niet in de meest logische categorie. Probeer opnieuw door te denken aan welke items natuurlijk bij elkaar horen en hoe een gebruiker zou zoeken naar deze opties."
             }
           }
         ]
