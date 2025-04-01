@@ -129,52 +129,47 @@ export const lessonCategories: Record<string, Category> = {
           },
           {
             type: "scenario",
-            question: "Welke zelfscan-kassa interface is effectiever?",
-            explanation: "Hick's Law stelt dat de beslissingstijd toeneemt met het aantal keuzes. Bekijk deze twee zelfscan-kassa interfaces:",
+            question: "Welke navigatiebalk is effectiever voor een e-commerce website?",
+            explanation: "Hick's Law stelt dat de beslissingstijd toeneemt met het aantal keuzes. Bekijk deze twee navigatie-ontwerpen:",
             bad: {
-              title: "Chaotische Zelfscan Interface",
-              description: "Een zelfscan-kassa met te veel keuzes:",
+              title: "Overvolle Navigatiebalk",
+              description: "Een e-commerce website met te veel navigatie-opties:",
               options: [
-                "💳 Betalen met PIN (klein, grijs)",
-                "💵 Betalen met Contant (klein, grijs)",
-                "💰 Betalen met Creditcard (klein, grijs)",
-                "🎁 Betalen met Cadeaukaart (klein, grijs)",
-                "➕ Product toevoegen (klein, blauw)",
-                "➖ Product verwijderen (klein, rood)",
-                "🏷️ Kortingscode invoeren (klein, groen)",
-                "📇 Bonuskaart scannen (klein, paars)",
-                "❓ Hulp vragen (klein, oranje)",
-                "🏠 Terug naar start (klein, grijs)",
-                "ℹ️ Info bekijken (klein, grijs)",
-                "🌐 Taal wijzigen (klein, grijs)",
-                "🔊 Geluid aan/uit (klein, grijs)",
-                "🔆 Helderheid aanpassen (klein, grijs)",
-                "🔤 Lettergrootte (klein, grijs)",
-                "🧾 Kassabon opties (klein, grijs)",
-                "🛒 Winkelwagen bekijken (klein, blauw)",
-                "💲 Prijscheck (klein, grijs)",
-                "📞 Klantenservice bellen (klein, rood)",
-                "⚠️ Storingmelding (klein, oranje)",
-                "❌ Afbreken (klein, rood)",
-                "🅿️ Parkeerkaart (klein, grijs)",
-                "🎫 Zegels sparen (klein, groen)",
-                "💳 Klantenkaart (klein, paars)",
-                "☰ Menu (klein, grijs)"
+                "Dames (zelfde grootte als andere items)",
+                "Heren (zelfde grootte als andere items)",
+                "Kinderen (zelfde grootte als andere items)",
+                "Sport (zelfde grootte als andere items)",
+                "Sale (zelfde grootte als andere items)",
+                "Nieuw (zelfde grootte als andere items)",
+                "Merken (zelfde grootte als andere items)",
+                "Accessoires (zelfde grootte als andere items)",
+                "Wintercollectie (zelfde grootte als andere items)",
+                "Zomercollectie (zelfde grootte als andere items)",
+                "Schoenen (zelfde grootte als andere items)",
+                "Kleding (zelfde grootte als andere items)",
+                "Tassen (zelfde grootte als andere items)",
+                "Outlet (zelfde grootte als andere items)",
+                "Cadeaus (zelfde grootte als andere items)",
+                "Submenu's verdwijnen bij muisbeweging",
+                "Veel animaties en kleuren in de navigatie",
+                "Geen duidelijke visuele hiërarchie"
               ],
-              feedback: "Deze interface heeft 25 knoppen van gelijke grootte, verspreid over het scherm zonder logische ordening. De verschillende kleuren en iconen maken het verwarrend. In een rij met wachtende mensen achter zich, raakt de gebruiker gefrustreerd door de traagheid van het systeem. Dit leidt tot langere afrekentijd, meer frustratie en kans op fouten."
+              feedback: "Deze navigatiebalk bevat meer dan 15 categorieën zonder duidelijke prioriteit. Alle items hebben dezelfde grootte en stijl, waardoor niets uitspringt. Submenu's die verdwijnen bij muisbeweging zorgen voor frustratie. De vele kleuren en animaties leiden af in plaats van te helpen. Dit resulteert in een hogere bounce-rate en lagere conversies omdat gebruikers overweldigd raken en de site verlaten."
             },
             good: {
-              title: "Gestructureerde Zelfscan Interface",
-              description: "Een zelfscan-kassa met duidelijke hiërarchie:",
+              title: "Gestructureerde Navigatiebalk",
+              description: "Een e-commerce website met duidelijke navigatie-hiërarchie:",
               options: [
-                "💳 BETALEN (groot, groene knop, bovenaan gecentreerd)",
-                "➕ Product toevoegen (middelgroot, blauwe knop, links midden)",
-                "🏷️ Kortingscode invoeren (middelgroot, blauwe knop, rechts midden)",
-                "❓ Hulp vragen (klein, grijze knop, linksonder)",
-                "🏠 Terug naar start (klein, grijze knop, middenonder)",
-                "☰ Menu (klein, grijze knop, rechtsonder)"
+                "Heren (groot, vetgedrukt, contrasterend)",
+                "Dames (groot, vetgedrukt, contrasterend)",
+                "Kinderen (groot, vetgedrukt, contrasterend)",
+                "Sale (groot, vetgedrukt, contrasterend)",
+                "Merken (groot, vetgedrukt, contrasterend)",
+                "Submenu met max. 6 opties per categorie",
+                "Klikbaar menu dat open blijft tot sluiten",
+                "Prominente zoekbalk in de navigatie"
               ],
-              feedback: "Deze interface gebruikt duidelijke visuele hiërarchie met slechts 6 knoppen. De 'Betalen' knop is prominent aanwezig en betaalmethodes worden automatisch gedetecteerd. De meest gebruikte functies zijn direct toegankelijk, terwijl minder gebruikte opties in het menu staan. Dit zorgt voor sneller afrekenen, minder stress en intuïtieve bediening."
+              feedback: "Deze navigatiebalk bevat slechts 5 hoofdcategorieën met duidelijke visuele hiërarchie. De belangrijkste opties zijn vetgedrukt en contrasterend, terwijl minder belangrijke opties in submenu's zijn geplaatst. Elk submenu bevat maximaal 6 opties, wat binnen de cognitieve belastingslimiet valt. Het menu blijft open na klikken, wat gebruikers de tijd geeft om keuzes te maken. De prominente zoekbalk biedt directe toegang voor doelgerichte gebruikers. Dit resulteert in snellere navigatie, minder frustratie en hogere conversies."
             }
           }
         ]

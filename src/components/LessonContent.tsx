@@ -435,54 +435,20 @@ export default function LessonContent({
   const renderScenarioExample = (example: ScenarioExample) => {
     // Specifieke check voor zelfscan-kassa voorbeeld
     const isZelfscanExample = example.question.includes("zelfscan-kassa");
+    const isNavigationExample = example.question.includes("navigatiebalk");
+
     const [selectedOption, setSelectedOption] = useState<"bad" | "good" | null>(
       null
     );
     const [showFeedback, setShowFeedback] = useState(false);
 
-    // Vereenvoudigde opties met type check
-    const simplifiedBadOptions: string[] = isZelfscanExample
-      ? [
-          "💳 PIN",
-          "💵 Contant",
-          "💰 Creditcard",
-          "🎁 Cadeaukaart",
-          "➕ Product",
-          "➖ Verwijderen",
-          "🏷️ Kortingscode",
-          "📇 Bonuskaart",
-          "❓ Hulp",
-          "🏠 Terug",
-          "ℹ️ Info",
-          "🌐 Taal",
-          "🔊 Geluid",
-          "🔆 Helderheid",
-          "🔤 Lettergrootte",
-          "🧾 Kassabon",
-          "🛒 Winkelwagen",
-          "💲 Prijscheck",
-          "📞 Klantenservice",
-          "⚠️ Storing",
-          "❌ Afbreken",
-          "🅿️ Parkeren",
-          "🎫 Zegels",
-          "💳 Klantenkaart",
-          "☰ Menu",
-        ]
-      : "options" in example.bad && Array.isArray(example.bad.options)
-      ? (example.bad.options as string[])
-      : [];
+    // Ophalen van opties
+    const simplifiedBadOptions: string[] =
+      "options" in example.bad && Array.isArray(example.bad.options)
+        ? (example.bad.options as string[])
+        : [];
 
-    const simplifiedGoodOptions: string[] = isZelfscanExample
-      ? [
-          "💳 BETALEN",
-          "➕ Product",
-          "🏷️ Kortingscode",
-          "❓ Hulp",
-          "🏠 Terug",
-          "☰ Menu",
-        ]
-      : Array.isArray(example.good.options)
+    const simplifiedGoodOptions: string[] = Array.isArray(example.good.options)
       ? example.good.options
       : [];
 
@@ -629,6 +595,128 @@ export default function LessonContent({
                   </div>
                 </div>
               </div>
+            ) : isNavigationExample ? (
+              <div className="border-4 border-gray-700 rounded-lg p-3 sm:p-4 mb-4 bg-white relative overflow-hidden shadow-lg">
+                {/* Overvolle navigatiebalk met eigen branding */}
+                <div className="bg-gradient-to-r from-purple-600 to-pink-500 p-3 rounded-t">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="text-white font-bold text-xl flex items-center">
+                      <span className="bg-yellow-400 text-purple-800 px-2 py-1 rounded-md mr-1">
+                        MEGA
+                      </span>
+                      <span>Shop</span>
+                      <span className="text-yellow-300 ml-1 text-sm">★★★</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="text-white bg-purple-700 rounded-full w-8 h-8 flex items-center justify-center">
+                        🔍
+                      </div>
+                      <div className="text-white bg-purple-700 rounded-full w-8 h-8 flex items-center justify-center">
+                        👤
+                      </div>
+                      <div className="text-white bg-purple-700 rounded-full w-8 h-8 flex items-center justify-center">
+                        🛒
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Overvolle navigatiebalk */}
+                <div className="bg-gray-100 flex flex-wrap gap-1 py-2 border-b border-gray-300 px-2">
+                  {[
+                    "Dames",
+                    "Heren",
+                    "Kinderen",
+                    "Sport",
+                    "Sale",
+                    "Nieuw",
+                    "Merken",
+                    "Accessoires",
+                    "Wintercollectie",
+                    "Zomercollectie",
+                    "Schoenen",
+                    "Kleding",
+                    "Tassen",
+                    "Outlet",
+                    "Cadeaus",
+                  ].map((item, index) => (
+                    <div
+                      key={index}
+                      className="text-gray-700 text-sm px-2 py-1 hover:bg-gray-200 rounded transition-colors"
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Submenu dat verdwijnt */}
+                <div className="mt-2 p-2 bg-white rounded border border-gray-300 relative shadow-sm">
+                  <div className="absolute top-0 right-0 text-xs text-red-500 bg-red-100 px-1 rounded font-semibold">
+                    Verdwijnt bij muisbeweging
+                  </div>
+                  <div className="text-xs text-gray-700 mb-1 font-bold">
+                    Submenu: Heren
+                  </div>
+                  <div className="grid grid-cols-3 gap-1">
+                    {[
+                      "T-shirts",
+                      "Broeken",
+                      "Jassen",
+                      "Schoenen",
+                      "Accessoires",
+                      "Sportkleding",
+                      "Ondergoed",
+                      "Sokken",
+                      "Zwemkleding",
+                      "Feestkleding",
+                      "Werkkleding",
+                      "Pyjama's",
+                    ].map((item, index) => (
+                      <div
+                        key={index}
+                        className="text-gray-700 text-xs px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                      >
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Afleidende animaties en kleuren */}
+                <div className="mt-2 flex justify-between">
+                  <div className="text-white text-xs px-2 py-1 bg-red-500 rounded animate-pulse font-bold">
+                    SALE! 🔥 TOT 70% KORTING
+                  </div>
+                  <div className="text-white text-xs px-2 py-1 bg-green-500 rounded font-bold">
+                    NIEUW BINNEN ✨
+                  </div>
+                  <div className="text-white text-xs px-2 py-1 bg-blue-500 rounded font-bold">
+                    POPULAIRE ITEMS 👍
+                  </div>
+                  <div className="text-white text-xs px-2 py-1 bg-purple-500 rounded font-bold">
+                    LIMITED EDITION 🌟
+                  </div>
+                </div>
+
+                {/* Meer flitsende animaties en pop-ups */}
+                <div className="mt-2 bg-yellow-100 border border-yellow-500 p-2 rounded-lg animate-pulse">
+                  <div className="text-yellow-800 text-sm font-bold flex items-center">
+                    <span className="mr-1">🎁</span> Win een gratis item! Meld
+                    je nu aan voor de nieuwsbrief!
+                  </div>
+                </div>
+
+                <div className="text-xs text-gray-600 mt-4 mb-1 font-semibold">
+                  Problemen met dit ontwerp:
+                </div>
+                <ul className="text-xs text-gray-600 list-disc pl-4 space-y-1">
+                  <li>Te veel categorieën (15+) zonder hiërarchie</li>
+                  <li>Alle items hebben dezelfde grootte en stijl</li>
+                  <li>Submenu's verdwijnen bij muisbeweging</li>
+                  <li>Afleidende kleuren, pop-ups en animaties</li>
+                  <li>Geen duidelijke visuele hiërarchie</li>
+                </ul>
+              </div>
             ) : (
               <ul className="list-disc pl-5 mb-4 space-y-2">
                 {simplifiedBadOptions.map((option, index) => (
@@ -669,8 +757,8 @@ export default function LessonContent({
 
             {isZelfscanExample ? (
               <div className="border-4 border-gray-700 rounded-lg p-3 sm:p-4 mb-4 bg-[#1a1a1a] relative shadow-lg">
-                {/* Productlijst met expliciete titel */}
-                <div className="mb-3 sm:mb-4">
+                {/* Producten lijst met expliciete titel */}
+                <div className="mb-4 sm:mb-5">
                   <div className="text-xs text-gray-400 mb-1 sm:mb-2">
                     Producten
                   </div>
@@ -678,19 +766,19 @@ export default function LessonContent({
                     className="bg-[#222] p-2 rounded border border-gray-700 overflow-hidden"
                     style={{ minHeight: "100px", maxHeight: "150px" }}
                   >
-                    <div className="flex justify-between text-gray-300 mb-2 text-sm">
+                    <div className="flex justify-between text-gray-300 mb-2">
                       <span>2x Melk 1L</span>
                       <span>€2,38</span>
                     </div>
-                    <div className="flex justify-between text-gray-300 mb-2 text-sm">
+                    <div className="flex justify-between text-gray-300 mb-2">
                       <span>1x Brood</span>
                       <span>€2,49</span>
                     </div>
-                    <div className="flex justify-between text-gray-300 mb-2 text-sm">
+                    <div className="flex justify-between text-gray-300 mb-2">
                       <span>3x Appel</span>
                       <span>€1,47</span>
                     </div>
-                    <div className="flex justify-between text-gray-300 mb-2 text-sm">
+                    <div className="flex justify-between text-gray-300 mb-2">
                       <span>1x Kaas 500g</span>
                       <span>€5,99</span>
                     </div>
@@ -698,17 +786,17 @@ export default function LessonContent({
                 </div>
 
                 {/* Verplaatste totaalbalk met afgeronde hoeken */}
-                <div className="bg-[#333] text-white p-2 mb-3 sm:mb-4 text-xs sm:text-sm rounded-lg flex justify-between">
+                <div className="bg-[#333] text-white p-2 mb-5 text-sm rounded-lg flex justify-between">
                   <span>Artikelen: 7</span>
                   <span className="font-bold">€43,28</span>
                 </div>
 
                 {/* Gestructureerde knoppen layout */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mb-3 sm:mb-4">
-                  <div className="border border-blue-600 rounded-lg py-1 sm:py-2 px-2 sm:px-3 bg-blue-900/20 text-center text-blue-400 text-sm hover:bg-blue-900/30 transition-colors">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mb-4">
+                  <div className="border border-gray-600 rounded-lg py-1 sm:py-2 px-2 sm:px-3 bg-gray-800 text-center text-gray-300 text-sm hover:bg-gray-700 transition-colors">
                     ➕ Product toevoegen
                   </div>
-                  <div className="border border-blue-600 rounded-lg py-1 sm:py-2 px-2 sm:px-3 bg-blue-900/20 text-center text-blue-400 text-sm hover:bg-blue-900/30 transition-colors">
+                  <div className="border border-gray-600 rounded-lg py-1 sm:py-2 px-2 sm:px-3 bg-gray-800 text-center text-gray-300 text-sm hover:bg-gray-700 transition-colors">
                     🏷️ Kortingscode
                   </div>
                 </div>
@@ -726,6 +814,118 @@ export default function LessonContent({
                     💳 BETALEN
                   </div>
                 </div>
+              </div>
+            ) : isNavigationExample ? (
+              <div className="border-4 border-gray-700 rounded-lg p-3 sm:p-4 mb-4 bg-[#1a1a1a] relative shadow-lg">
+                <div className="bg-gray-900 p-3 rounded-t">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="text-white font-bold text-xl">
+                      <span className="border-b-2 border-blue-500">
+                        simplify
+                      </span>
+                    </div>
+
+                    {/* Prominente zoekbalk */}
+                    <div className="flex-1 mx-4">
+                      <div className="bg-white rounded-full flex items-center px-3 py-1 border-2 border-blue-500">
+                        <span className="text-blue-500 mr-2">🔍</span>
+                        <span className="text-gray-500 text-sm">
+                          Zoek producten...
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-3">
+                      <div className="text-white hover:text-blue-300 transition-colors">
+                        👤
+                      </div>
+                      <div className="text-white hover:text-blue-300 transition-colors relative">
+                        🛒
+                        <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                          2
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Gestructureerde navigatiebalk */}
+                  <div className="flex justify-between py-2 mt-2">
+                    {["Heren", "Dames", "Kinderen", "Sale", "Merken"].map(
+                      (item, index) => (
+                        <div
+                          key={index}
+                          className="text-white font-semibold text-sm px-3 py-1 hover:bg-blue-800 rounded transition-colors cursor-pointer"
+                        >
+                          {item}
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+
+                {/* Submenu dat open blijft */}
+                <div className="mt-1 p-3 bg-gray-100 border border-gray-300 relative">
+                  <div className="absolute top-1 right-1 text-xs text-blue-700 bg-blue-100 px-1 rounded font-semibold">
+                    Blijft open na klikken
+                  </div>
+                  <div className="text-sm text-gray-800 mb-2 font-semibold border-b border-gray-300 pb-1">
+                    Heren &gt; Schoenen
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      "Sneakers",
+                      "Hardloopschoenen",
+                      "Voetbalschoenen",
+                      "Casual",
+                      "Luxe",
+                      "Sale",
+                    ].map((item, index) => (
+                      <div
+                        key={index}
+                        className="text-gray-700 text-sm px-3 py-2 bg-white rounded shadow-sm hover:shadow transition-all cursor-pointer"
+                      >
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Aanbevolen producten sectie */}
+                  <div className="mt-3 text-sm text-gray-800 font-semibold">
+                    Populaire sneakers
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 mt-1">
+                    <div className="bg-white p-2 rounded shadow-sm">
+                      <div className="text-blue-600 text-xs font-semibold">
+                        Nike Air Max
+                      </div>
+                      <div className="text-gray-700 text-xs">€129,99</div>
+                    </div>
+                    <div className="bg-white p-2 rounded shadow-sm">
+                      <div className="text-blue-600 text-xs font-semibold">
+                        Adidas Ultraboost
+                      </div>
+                      <div className="text-gray-700 text-xs">€159,99</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-xs text-gray-600 mt-4 mb-1 font-semibold">
+                  Voordelen van dit ontwerp:
+                </div>
+                <ul className="text-xs text-gray-600 list-disc pl-4 space-y-1">
+                  <li>Slechts 5 hoofdcategorieën met duidelijke hiërarchie</li>
+                  <li>
+                    Consistente branding en kleurgebruik (zwart, wit, blauw)
+                  </li>
+                  <li>
+                    Submenu's bevatten maximaal 6 opties met duidelijke ordening
+                  </li>
+                  <li>
+                    Menu blijft open na klikken voor betere gebruikservaring
+                  </li>
+                  <li>Prominente zoekbalk voor directe toegang</li>
+                  <li>Rustige visuele stijl zonder afleidende elementen</li>
+                </ul>
               </div>
             ) : (
               <ul className="list-disc pl-5 mb-4 space-y-2">
