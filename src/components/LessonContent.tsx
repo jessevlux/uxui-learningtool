@@ -153,11 +153,11 @@ interface HicksExample extends Example {
   };
 }
 
-// Add this after your other interface definitions
+// Pas de InteractiveExample interface aan
 interface InteractiveExample extends Example {
   type: "interactive";
-  question: string;
-  explanation: string;
+  task: string; // Teruggezet van question
+  description: string; // Teruggezet van explanation
   items: string[];
   categories: {
     name: string;
@@ -167,8 +167,8 @@ interface InteractiveExample extends Example {
     [category: string]: string[];
   };
   feedback: {
-    success: string;
-    failure: string;
+    correct: string; // Teruggezet van success
+    incorrect: string; // Teruggezet van failure
   };
 }
 
@@ -1000,79 +1000,55 @@ export default function LessonContent({
   };
 
   const renderInteractiveExample = (example: InteractiveExample) => {
-    const isSettingsExample = example.question.includes("instellingenpagina");
+    // Gebruik 'task' ipv 'question'
+    const isSettingsExample = example.task.includes("instellingenpagina");
 
-    const [availableItems, setAvailableItems] = useState<string[]>(
+    // State voor de items in de linker (bron) kolom en rechter (doel) kolommen
+    const [sourceItems, setSourceItems] = useState<string[]>(
       example.items || []
     );
-    const [selectedItems, setSelectedItems] = useState<{
+    const [categorizedItems, setCategorizedItems] = useState<{
       [key: string]: string[];
-    }>({});
+    }>(
+      // Initialiseer categorieën als leeg
+      Object.fromEntries(example.categories.map((cat) => [cat.name, []]))
+    );
     const [showFeedback, setShowFeedback] = useState(false);
     const [interactiveCorrect, setInteractiveCorrect] = useState(false);
 
-    const handleDrop = (item: string, category: string) => {
-      // Verwijder het item uit de beschikbare items
-      setAvailableItems((prev) => prev.filter((i) => i !== item));
-
-      // Verwijder het item uit alle categorieën
-      const newSelectedItems = { ...selectedItems };
-      Object.keys(newSelectedItems).forEach((cat) => {
-        newSelectedItems[cat] = newSelectedItems[cat] || [];
-        newSelectedItems[cat] = newSelectedItems[cat].filter((i) => i !== item);
+    // --- Draggable Item Component (Aangepast voor de bronlijst) ---
+    const SourceDraggableItem = ({ item }: { item: string }) => {
+      const ref = useRef<HTMLDivElement>(null);
+      const [{ isDragging }, drag] = useDrag({
+        type: "SETTING_ITEM",
+        item: { name: item }, // Het item dat gesleept wordt
+        collect: (monitor) => ({
+          isDragging: !!monitor.isDragging(),
+        }),
+        // Optioneel: Verberg het origineel tijdens het slepen
+        // end: (item, monitor) => {
+        //   if (!monitor.didDrop()) {
+        //     // Actie als het item niet gedropt is (optioneel)
+        //   }
+        // }
       });
 
-      // Initialiseer de categorie als die nog niet bestaat
-      if (!newSelectedItems[category]) {
-        newSelectedItems[category] = [];
-      }
+      drag(ref); // Koppel drag aan de ref
 
-      // Voeg het item toe aan de nieuwe categorie
-      newSelectedItems[category] = [...newSelectedItems[category], item];
-
-      setSelectedItems(newSelectedItems);
+      return (
+        <div
+          ref={ref}
+          className={`p-2 mb-2 bg-gray-700 text-white rounded cursor-move flex items-center justify-between text-sm ${
+            isDragging ? "opacity-30" : "opacity-100" // Maak item doorzichtig tijdens slepen
+          }`}
+        >
+          <span>{item}</span>
+          <span className="text-gray-400 text-xs">SLEEP</span>
+        </div>
+      );
     };
 
-    const handleItemReturn = (item: string) => {
-      // Verwijder het item uit alle categorieën
-      const newSelectedItems = { ...selectedItems };
-      Object.keys(newSelectedItems).forEach((cat) => {
-        newSelectedItems[cat] = newSelectedItems[cat].filter((i) => i !== item);
-      });
-      setSelectedItems(newSelectedItems);
-
-      // Voeg het item terug toe aan beschikbare items
-      setAvailableItems((prev) => [...prev, item]);
-    };
-
-    const checkSolution = () => {
-      let isCorrect = true;
-
-      // Controleer of elke categorie de juiste items bevat
-      Object.entries(example.solution).forEach(([category, expectedItems]) => {
-        const currentItems = selectedItems[category] || [];
-
-        // De volgorde maakt niet uit, alleen dat de juiste items in de juiste categorie zitten
-        // Controleer of alle verwachte items aanwezig zijn
-        if (expectedItems.length !== currentItems.length) {
-          isCorrect = false;
-          return;
-        }
-
-        // Controleer of alle items overeenkomen
-        for (const item of expectedItems) {
-          if (!currentItems.includes(item)) {
-            isCorrect = false;
-            return;
-          }
-        }
-      });
-
-      setInteractiveCorrect(isCorrect);
-      setShowFeedback(true);
-    };
-
-    // Een droppable categorie component
+    // --- Droppable Category Component (Aangepast) ---
     const DroppableCategory = ({
       category,
       description,
@@ -1081,83 +1057,262 @@ export default function LessonContent({
       description: string;
     }) => {
       const ref = useRef<HTMLDivElement>(null);
-      const [{ isOver }, drop] = useDrop<
-        { name: string },
+      const [{ isOver, canDrop }, drop] = useDrop<
+        { name: string }, // Type van het gesleepte item
         void,
-        { isOver: boolean }
+        { isOver: boolean; canDrop: boolean } // Verzamelde state
       >(() => ({
-        accept: "SETTING_ITEM",
-        drop: (item: { name: string }) => handleDrop(item.name, category),
+        accept: "SETTING_ITEM", // Accepteer alleen items van dit type
+        drop: (item: { name: string }) => {
+          // Functie die wordt aangeroepen bij het droppen
+          handleDrop(item.name, category);
+        },
         collect: (monitor) => ({
           isOver: !!monitor.isOver(),
+          canDrop: !!monitor.canDrop(),
         }),
       }));
 
-      // Connect the drop to the ref
-      drop(ref);
+      drop(ref); // Koppel drop aan de ref
+
+      const isActive = isOver && canDrop;
+      let borderColor = "border-gray-600"; // Donkerdere border standaard
+      if (isActive) {
+        borderColor = "border-blue-500";
+      } else if (canDrop) {
+        borderColor = "border-gray-500";
+      }
 
       return (
         <div
           ref={ref}
-          className={`p-4 border ${
-            isOver ? "border-blue-500 bg-blue-100" : "border-gray-300"
-          } rounded-lg mb-4 min-h-[150px]`}
+          className={`p-4 border-2 border-dashed ${borderColor} bg-[#2a2a2a] rounded-lg mb-4 min-h-[150px] transition-colors duration-200 ease-in-out ${
+            isActive ? "bg-[#3a3a3a]" : ""
+          }`} // Donkerdere achtergrond
         >
-          <h3 className="font-bold text-gray-800 mb-1">{category}</h3>
-          <p className="text-sm text-gray-600 mb-3">{description}</p>
+          <h3 className="font-bold text-gray-200 mb-1">{category}</h3>
+          <p className="text-sm text-gray-400 mb-3">{description}</p>
           <div className="space-y-2">
-            {(selectedItems[category] || []).map((item) => (
+            {/* Toon de items die naar deze categorie zijn gesleept */}
+            {(categorizedItems[category] || []).map((item) => (
               <div
                 key={item}
-                className="p-2 bg-blue-600 text-white rounded flex justify-between items-center"
-                onClick={() => handleItemReturn(item)}
+                className="p-2 bg-blue-700 text-white rounded flex justify-between items-center text-sm"
+                onClick={() => handleItemReturn(item, category)} // Klik om terug te zetten
               >
                 <span>{item}</span>
-                <span className="text-xs text-white cursor-pointer">✕</span>
+                <span
+                  className="text-xs text-gray-300 cursor-pointer hover:text-white"
+                  title="Terugzetten"
+                >
+                  ✕
+                </span>
               </div>
             ))}
+            {/* Placeholder als de categorie leeg is */}
+            {(categorizedItems[category] || []).length === 0 && !isActive && (
+              <div className="flex items-center justify-center h-full min-h-[50px]">
+                <p className="text-sm text-gray-500 italic">
+                  Sleep hier een instelling
+                </p>
+              </div>
+            )}
+            {/* Visuele feedback tijdens hover */}
+            {isActive && (
+              <div className="flex items-center justify-center h-full min-h-[50px] bg-blue-900/30 rounded-md">
+                <p className="text-sm text-blue-300 font-semibold">Drop hier</p>
+              </div>
+            )}
           </div>
         </div>
       );
     };
 
+    // --- Functie voor het verwerken van een drop ---
+    const handleDrop = (item: string, targetCategory: string) => {
+      // 1. Verwijder item uit de bronlijst
+      setSourceItems((prev) => prev.filter((i) => i !== item));
+
+      // 2. Voeg item toe aan de doellijst (categorie)
+      setCategorizedItems((prev) => {
+        const newCategorized = { ...prev };
+        // Zorg ervoor dat de categorie-array bestaat
+        if (!newCategorized[targetCategory]) {
+          newCategorized[targetCategory] = [];
+        }
+        // Voeg item toe als het nog niet bestaat in de categorie
+        if (!newCategorized[targetCategory].includes(item)) {
+          newCategorized[targetCategory] = [
+            ...newCategorized[targetCategory],
+            item,
+          ];
+        }
+        return newCategorized;
+      });
+    };
+
+    // --- Functie om een item terug te zetten naar de bronlijst ---
+    const handleItemReturn = (item: string, sourceCategory: string) => {
+      // 1. Verwijder item uit de doellijst (categorie)
+      setCategorizedItems((prev) => {
+        const newCategorized = { ...prev };
+        if (newCategorized[sourceCategory]) {
+          newCategorized[sourceCategory] = newCategorized[
+            sourceCategory
+          ].filter((i) => i !== item);
+        }
+        return newCategorized;
+      });
+
+      // 2. Voeg item terug toe aan de bronlijst (als het er nog niet is)
+      setSourceItems((prev) => {
+        if (!prev.includes(item)) {
+          return [...prev, item];
+        }
+        return prev;
+      });
+    };
+
+    // --- Functie om de oplossing te controleren ---
+    const checkSolution = () => {
+      let isCorrect = true;
+
+      // Controleer of alle items zijn gecategoriseerd
+      if (sourceItems.length > 0) {
+        isCorrect = false;
+      } else {
+        // Controleer of elke categorie de juiste items bevat
+        Object.entries(example.solution).forEach(
+          ([category, expectedItems]) => {
+            const currentItems = categorizedItems[category] || [];
+
+            // Sorteer beide arrays voor een consistente vergelijking
+            const sortedExpected = [...expectedItems].sort();
+            const sortedCurrent = [...currentItems].sort();
+
+            if (
+              JSON.stringify(sortedExpected) !== JSON.stringify(sortedCurrent)
+            ) {
+              isCorrect = false;
+            }
+          }
+        );
+
+        // Controleer of er geen items in ongedefinieerde categorieën zijn (zou niet moeten gebeuren)
+        Object.keys(categorizedItems).forEach((category) => {
+          if (!example.solution[category]) {
+            if (categorizedItems[category].length > 0) {
+              isCorrect = false; // Items in een categorie die niet in de oplossing staat
+            }
+          }
+        });
+      }
+
+      setInteractiveCorrect(isCorrect);
+      setShowFeedback(true);
+    };
+
+    // --- Reset functie ---
+    const resetExercise = () => {
+      setSourceItems(example.items || []);
+      setCategorizedItems(
+        Object.fromEntries(example.categories.map((cat) => [cat.name, []]))
+      );
+      setShowFeedback(false);
+      setInteractiveCorrect(false);
+    };
+
     return (
       <div className="space-y-8">
         <div>
-          <h2 className="text-xl font-bold mb-2 text-white">
-            {example.question}
-          </h2>
-          <p className="text-gray-300 mb-6">{example.explanation}</p>
+          <h2 className="text-xl font-bold mb-2 text-white">{example.task}</h2>
+          <p className="text-gray-300 mb-6">{example.description}</p>
+
+          {/* Toevoegen van een visuele context */}
+          <div className="bg-gray-800 p-4 rounded-lg mb-6 border border-gray-700">
+            <div className="flex items-center mb-4">
+              <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+                S
+              </div>
+              <h3 className="ml-3 text-white font-bold">SuperApp</h3>
+              <div className="ml-auto text-gray-400 text-sm">
+                Gebruikersklachten: 78% vindt instellingen verwarrend
+              </div>
+            </div>
+            <div className="flex items-center justify-between text-sm text-gray-400 border-b border-gray-700 pb-2 mb-2">
+              <span>Huidige situatie:</span>
+              <span className="text-red-400">
+                Gemiddeld 42 seconden om een instelling te vinden
+              </span>
+            </div>
+            <div className="text-sm text-gray-300">
+              <p>Gebruikerstfeedback:</p>
+              <ul className="list-disc pl-5 mt-1 space-y-1 text-gray-400">
+                <li>"Ik kan nooit vinden wat ik zoek in de instellingen"</li>
+                <li>"Er zijn te veel opties, het is overweldigend"</li>
+                <li>
+                  "Ik moet steeds scrollen om de juiste instelling te vinden"
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Linker kolom: De slecht ingedeelde instellingenpagina */}
-          <div className="w-full lg:w-1/3 bg-[#2a2a2a] p-4 rounded-lg">
-            <h3 className="font-bold text-white mb-4">
-              Instellingen (ongeorganiseerd)
-            </h3>
-
-            {availableItems.length === 0 ? (
-              <p className="text-gray-400 italic">Alle items zijn ingedeeld</p>
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Linker kolom: De ongeorganiseerde instellingen (bron) */}
+          <div className="w-full lg:w-1/3 bg-[#2a2a2a] p-4 rounded-lg border border-gray-600">
+            <div className="flex items-center mb-4">
+              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xs">
+                S
+              </div>
+              <h3 className="ml-2 font-bold text-gray-200">
+                SuperApp Instellingen
+              </h3>
+            </div>
+            <div className="flex items-center mb-4">
+              <div className="w-full relative">
+                <input
+                  type="text"
+                  placeholder="Zoek in instellingen..."
+                  className="w-full bg-gray-700 border-0 rounded py-2 px-3 text-sm text-gray-300"
+                  disabled
+                />
+                <div className="absolute right-3 top-2 text-gray-500">🔍</div>
+              </div>
+            </div>
+            <p className="text-sm text-gray-400 mb-4">
+              Sleep deze items naar de juiste categorie rechts om de
+              instellingenpagina te verbeteren.
+            </p>
+            {sourceItems.length === 0 ? (
+              <p className="text-gray-400 italic text-center py-10">
+                Alle items zijn ingedeeld!
+              </p>
             ) : (
-              <div className="space-y-2 max-h-[500px] overflow-y-auto p-2">
-                {availableItems.map((item) => (
-                  <DraggableItem key={item} item={item} />
+              <div className="space-y-0 max-h-[500px] overflow-y-auto pr-2">
+                {sourceItems.map((item) => (
+                  <SourceDraggableItem key={item} item={item} />
                 ))}
               </div>
             )}
           </div>
 
-          {/* Rechter kolom: De categorieën waaraan items kunnen worden toegewezen */}
+          {/* Rechter kolom: De categorieën (doel) */}
           <div className="w-full lg:w-2/3">
-            <h3 className="font-bold text-white mb-4">
-              Instellingen organiseren in categorieën
-            </h3>
+            <div className="flex items-center mb-4">
+              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xs">
+                S
+              </div>
+              <h3 className="ml-2 font-bold text-gray-200">
+                SuperApp Instellingen (Verbeterd)
+              </h3>
+            </div>
             <p className="text-gray-400 mb-4">
-              Sleep de instellingen naar de juiste categorie
+              Organiseer de instellingen in logische categorieën om de
+              gebruikerservaring te verbeteren.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto p-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto pr-2">
               {example.categories.map((cat) => (
                 <DroppableCategory
                   key={cat.name}
@@ -1167,23 +1322,27 @@ export default function LessonContent({
               ))}
             </div>
 
-            <div className="mt-6 flex justify-between">
+            <div className="mt-6 flex justify-between items-center">
               <button
-                onClick={() => {
-                  // Reset the exercise
-                  setAvailableItems(example.items);
-                  setSelectedItems({});
-                  setShowFeedback(false);
-                }}
-                className="px-4 py-2 bg-gray-600 rounded text-white"
+                onClick={resetExercise}
+                className="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded text-white text-sm transition-colors"
               >
-                Reset
+                Reset Oefening
               </button>
 
               <button
                 onClick={checkSolution}
-                className="px-4 py-2 bg-blue-600 rounded text-white"
-                disabled={availableItems.length > 0}
+                className={`px-6 py-2 rounded text-white text-sm transition-colors ${
+                  sourceItems.length > 0
+                    ? "bg-gray-500 cursor-not-allowed"
+                    : "bg-blue-600 hover:bg-blue-700"
+                }`}
+                disabled={sourceItems.length > 0}
+                title={
+                  sourceItems.length > 0
+                    ? "Sleep eerst alle items naar een categorie"
+                    : "Controleer je indeling"
+                }
               >
                 Controleer
               </button>
@@ -1191,50 +1350,78 @@ export default function LessonContent({
           </div>
         </div>
 
-        {/* Feedback wanneer gecontroleerd */}
+        {/* Feedback sectie met meer context */}
         {showFeedback && (
           <div
-            className={`p-6 rounded-lg mt-8 ${
+            className={`p-6 rounded-lg mt-8 border ${
               interactiveCorrect
-                ? "bg-green-900/20 border border-green-900"
-                : "bg-orange-900/20 border border-orange-900"
+                ? "bg-green-900/20 border-green-700"
+                : "bg-red-900/20 border-red-700"
             }`}
           >
             <h3 className="text-xl font-bold mb-4 text-white">
-              {interactiveCorrect ? "Uitstekend!" : "Bijna goed!"}
-            </h3>
-            <p className="text-gray-300">
               {interactiveCorrect
-                ? example.feedback.success
-                : example.feedback.failure}
-            </p>
-
-            {!interactiveCorrect && (
-              <button
-                onClick={() => setShowFeedback(false)}
-                className="mt-4 px-4 py-2 bg-orange-700 rounded text-white"
-              >
-                Probeer opnieuw
-              </button>
-            )}
+                ? "Uitstekend! Gebruikerservaring verbeterd"
+                : sourceItems.length > 0
+                ? "Nog niet klaar"
+                : "Bijna goed, maar niet optimaal"}
+            </h3>
 
             {interactiveCorrect && (
-              <button
-                onClick={() => handleNextStep()}
-                className="mt-4 px-4 py-2 bg-blue-600 rounded text-white flex items-center"
-              >
-                <span className="mr-2">
-                  {currentStep < (currentLesson?.examples.length ?? 0) - 1
-                    ? "Volgende"
-                    : "Afronden"}
-                </span>
-                {currentStep < (currentLesson?.examples.length ?? 0) - 1 ? (
-                  <FaArrowRight />
-                ) : (
-                  <FaCheck />
-                )}
-              </button>
+              <div className="bg-gray-800 p-3 rounded mb-4 flex justify-between items-center">
+                <div className="text-sm">
+                  <span className="text-gray-400">
+                    Tijd om instelling te vinden:{" "}
+                  </span>
+                  <span className="text-green-400 font-bold">15 sec</span>
+                  <span className="text-green-400 ml-1">(64% verbetering)</span>
+                </div>
+                <div className="text-sm">
+                  <span className="text-gray-400">
+                    Gebruikerstevredenheid:{" "}
+                  </span>
+                  <span className="text-green-400 font-bold">92%</span>
+                  <span className="text-green-400 ml-1">(42% verbetering)</span>
+                </div>
+              </div>
             )}
+
+            <p className="text-gray-300">
+              {interactiveCorrect
+                ? example.feedback.correct
+                : sourceItems.length > 0
+                ? `Je moet eerst alle ${sourceItems.length} resterende instelling(en) naar een categorie slepen voordat je kunt controleren.`
+                : example.feedback.incorrect}
+            </p>
+
+            {/* Knoppen in feedback */}
+            <div className="mt-4 flex gap-4">
+              {!interactiveCorrect && (
+                <button
+                  onClick={() => setShowFeedback(false)}
+                  className="px-4 py-2 bg-orange-700 hover:bg-orange-800 rounded text-white text-sm transition-colors"
+                >
+                  Pas aan
+                </button>
+              )}
+              {interactiveCorrect && (
+                <button
+                  onClick={handleNextStep}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white flex items-center text-sm transition-colors"
+                >
+                  <span className="mr-2">
+                    {currentStep < (currentLesson?.examples.length ?? 0) - 1
+                      ? "Volgende"
+                      : "Afronden"}
+                  </span>
+                  {currentStep < (currentLesson?.examples.length ?? 0) - 1 ? (
+                    <FaArrowRight />
+                  ) : (
+                    <FaCheck />
+                  )}
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>

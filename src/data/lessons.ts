@@ -177,67 +177,46 @@ export const lessonCategories: Record<string, Category> = {
           },
           {
             type: "interactive",
-            question: "Optimaliseer de instellingenpagina van deze app",
-            explanation: "Pas Hick's Law toe om deze overvolle instellingenpagina te verbeteren door items te groeperen in logische categorieën.",
+            task: "Verbeter de instellingenpagina van de 'SuperApp'",
+            description: "Je werkt als UX-designer bij een populaire app. Gebruikers klagen dat de instellingenpagina onoverzichtelijk is. Pas Hick's Law toe om de cognitieve belasting te verminderen door de 28 instellingen in logische categorieën te groeperen.",
             items: [
-              "Account gegevens", 
+              "Account gegevens",
               "Wachtwoord wijzigen",
               "E-mail adres wijzigen",
               "Profielfoto",
-              "Privacyinstellingen", 
-              "Zichtbaarheid profiel", 
+              "Privacyinstellingen",
+              "Zichtbaarheid profiel",
               "Gegevens downloaden",
               "Account verwijderen",
-              "Pushmeldingen", 
-              "E-mailnotificaties", 
+              "Pushmeldingen",
+              "E-mailnotificaties",
               "SMS-meldingen",
               "Stille modus",
-              "Taal instellen", 
-              "Thema wijzigen", 
+              "Taal instellen",
+              "Thema wijzigen",
               "Tekstgrootte",
               "Contrast",
-              "Betaalmethodes", 
-              "Factureringsgeschiedenis", 
+              "Betaalmethodes",
+              "Factureringsgeschiedenis",
               "Abonnementen",
               "Kortingscodes",
-              "Apparaatbeheer", 
-              "Verbindingen", 
+              "Apparaatbeheer",
+              "Verbindingen",
               "Bluetooth",
               "Wifi-instellingen",
-              "Helpcentrum", 
-              "Feedback geven", 
+              "Helpcentrum",
+              "Feedback geven",
               "Veelgestelde vragen",
               "Contact opnemen"
             ],
             categories: [
-              {
-                name: "Account",
-                description: "Persoonlijke accountgegevens en -instellingen"
-              },
-              {
-                name: "Privacy & Beveiliging",
-                description: "Instellingen voor uw privacy en veiligheid"
-              },
-              {
-                name: "Meldingen",
-                description: "Beheer hoe en wanneer u meldingen ontvangt"
-              },
-              {
-                name: "Weergave",
-                description: "Pas het uiterlijk van de app aan"
-              },
-              {
-                name: "Betaling & Abonnementen",
-                description: "Financiële instellingen en abonnementsbeheer"
-              },
-              {
-                name: "Apparaat & Connectiviteit",
-                description: "Apparaat- en verbindingsinstellingen"
-              },
-              {
-                name: "Ondersteuning",
-                description: "Hulp en ondersteuning"
-              }
+              { name: "Account", description: "Persoonlijke accountgegevens en -instellingen" },
+              { name: "Privacy & Beveiliging", description: "Instellingen voor uw privacy en veiligheid" },
+              { name: "Meldingen", description: "Beheer hoe en wanneer u meldingen ontvangt" },
+              { name: "Weergave", description: "Pas het uiterlijk van de app aan" },
+              { name: "Betaling & Abonnementen", description: "Financiële instellingen en abonnementsbeheer" },
+              { name: "Apparaat & Connectiviteit", description: "Apparaat- en verbindingsinstellingen" },
+              { name: "Ondersteuning", description: "Hulp en ondersteuning" }
             ],
             solution: {
               "Account": ["Account gegevens", "Wachtwoord wijzigen", "E-mail adres wijzigen", "Profielfoto"],
@@ -249,8 +228,8 @@ export const lessonCategories: Record<string, Category> = {
               "Ondersteuning": ["Helpcentrum", "Feedback geven", "Veelgestelde vragen", "Contact opnemen"]
             },
             feedback: {
-              correct: "Uitstekend! Door de 28 instellingen te groeperen in 7 logische categorieën, heb je de cognitieve belasting verminderd. De gebruiker hoeft nu eerst maar uit 7 opties te kiezen in plaats van uit 28. Binnen elke categorie zijn de opties ook beperkt tot 4 items, wat binnen de aanbevolen limiet van 7±2 valt. Deze toepassing van Hick's Law maakt de interface veel gebruiksvriendelijker en versnelt de beslissingstijd.",
-              incorrect: "Je bent op de goede weg, maar sommige items staan nog niet in de meest logische categorie. Probeer opnieuw door te denken aan welke items natuurlijk bij elkaar horen en hoe een gebruiker zou zoeken naar deze opties."
+              correct: "Uitstekend! Je hebt de gebruikerservaring van SuperApp aanzienlijk verbeterd. Door de 28 instellingen te groeperen in 7 logische categorieën, heb je de cognitieve belasting verminderd. Gebruikers hoeven nu eerst maar uit 7 opties te kiezen in plaats van uit 28. Binnen elke categorie zijn de opties ook beperkt tot 4 items, wat binnen de aanbevolen limiet van 7±2 valt. Uit gebruikerstests blijkt dat de tijd om een instelling te vinden met 64% is afgenomen en de gebruikerstevredenheid met 42% is gestegen. Deze toepassing van Hick's Law maakt de interface veel gebruiksvriendelijker en versnelt de beslissingstijd.",
+              incorrect: "Je bent op de goede weg, maar sommige items staan nog niet in de meest logische categorie. Gebruikerstests tonen aan dat mensen bepaalde instellingen niet kunnen vinden in de categorieën waar jij ze hebt geplaatst. Probeer opnieuw door te denken aan welke items natuurlijk bij elkaar horen en hoe een gebruiker zou zoeken naar deze opties."
             }
           }
         ]
