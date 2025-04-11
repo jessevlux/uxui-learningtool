@@ -1,3 +1,8 @@
+export interface Example {
+  type: string;
+  id: string;
+}
+
 export interface InteractiveExample extends Example {
   question: string;
   explanation: string;
