@@ -201,17 +201,6 @@ export default function Dashboard({ onDarkModeChange }: DashboardProps) {
               ></div>
             </div>
           </div>
-
-          {/* Continue Button */}
-          {userData.lastLesson && (
-            <button
-              onClick={handleContinueLastLesson}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center"
-            >
-              <span className="mr-2">Verdergaan met je les</span>
-              <span className="font-medium">{userData.lastLesson.title}</span>
-            </button>
-          )}
         </div>
       </section>
 

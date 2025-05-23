@@ -57,11 +57,21 @@ interface AnalysisExample {
   feedback: string;
 }
 
-type Example = ScenarioExample | InteractiveExample | AnalysisExample;
+// UX Visual examples voor interactieve visualisaties
+interface UxVisualExample {
+  type: "ux-visual";
+  subtype: "hicks" | "fitts" | "jakobs" | "millers";
+  title: string;
+  description: string;
+}
+
+type Example = ScenarioExample | InteractiveExample | AnalysisExample | UxVisualExample;
 
 interface Lesson {
   id: string;
   title: string;
+  description: string;
+  category: string;
   examples: Example[];
 }
 
@@ -79,101 +89,14 @@ export const lessonCategories: Record<string, Category> = {
       {
         id: "3-1",
         title: "Hick's Law",
+        description: "Ervaar zelf hoe het aantal keuzes de beslissingstijd beïnvloedt.",
+        category: "ux-principles",
         examples: [
           {
-            type: "scenario",
-            question: "Welke zelfscan-kassa interface is effectiever?",
-            explanation: "Hick's Law stelt dat de beslissingstijd toeneemt met het aantal keuzes. Bekijk deze twee zelfscan-kassa interfaces:",
-            bad: {
-              title: "Chaotische Zelfscan Interface",
-              description: "Een zelfscan-kassa met te veel keuzes:",
-              options: [
-                "💳 Betalen met PIN (klein, grijs)",
-                "💵 Betalen met Contant (klein, grijs)",
-                "💰 Betalen met Creditcard (klein, grijs)",
-                "🎁 Betalen met Cadeaukaart (klein, grijs)",
-                "➕ Product toevoegen (klein, blauw)",
-                "➖ Product verwijderen (klein, rood)",
-                "🏷️ Kortingscode invoeren (klein, groen)",
-                "📇 Bonuskaart scannen (klein, paars)",
-                "❓ Hulp vragen (klein, oranje)",
-                "🏠 Terug naar start (klein, grijs)",
-                "ℹ️ Info bekijken (klein, grijs)",
-                "🌐 Taal wijzigen (klein, grijs)",
-                "🔊 Geluid aan/uit (klein, grijs)",
-                "🔆 Helderheid aanpassen (klein, grijs)",
-                "🔤 Lettergrootte (klein, grijs)",
-                "🧾 Kassabon opties (klein, grijs)",
-                "🛒 Winkelwagen bekijken (klein, blauw)",
-                "💲 Prijscheck (klein, grijs)",
-                "📞 Klantenservice bellen (klein, rood)",
-                "⚠️ Storingmelding (klein, oranje)",
-                "❌ Afbreken (klein, rood)",
-                "🅿️ Parkeerkaart (klein, grijs)",
-                "🎫 Zegels sparen (klein, groen)",
-                "💳 Klantenkaart (klein, paars)",
-                "☰ Menu (klein, grijs)"
-              ],
-              feedback: "Deze interface heeft 25 knoppen van gelijke grootte, verspreid over het scherm. De verschillende kleuren en iconen maken het verwarrend. In een rij met wachtende mensen achter zich, raakt de gebruiker gefrustreerd door de traagheid van het systeem. Dit leidt tot langere afrekentijd, meer frustratie en kans op fouten."
-            },
-            good: {
-              title: "Gestructureerde Zelfscan Interface",
-              description: "Een zelfscan-kassa met duidelijke hiërarchie:",
-              options: [
-                "💳 BETALEN (groot, groene knop, bovenaan gecentreerd)",
-                "➕ Product toevoegen (middelgroot, blauwe knop, links midden)",
-                "🏷️ Kortingscode invoeren (middelgroot, blauwe knop, rechts midden)",
-                "❓ Hulp vragen (klein, grijze knop, linksonder)",
-                "🏠 Terug naar start (klein, grijze knop, middenonder)",
-                "☰ Menu (klein, grijze knop, rechtsonder)"
-              ],
-              feedback: "Deze interface gebruikt duidelijke visuele hiërarchie met slechts 6 knoppen. De 'Betalen' knop is prominent aanwezig en betaalmethodes worden automatisch gedetecteerd. De meest gebruikte functies zijn direct toegankelijk, terwijl minder gebruikte opties in het menu staan. Dit zorgt voor sneller afrekenen, minder stress en intuïtieve bediening."
-            }
-          },
-          {
-            type: "scenario",
-            question: "Welke navigatiebalk is effectiever voor een e-commerce website?",
-            explanation: "Hick's Law stelt dat de beslissingstijd toeneemt met het aantal keuzes. Bekijk deze twee navigatie-ontwerpen:",
-            bad: {
-              title: "Overvolle Navigatiebalk",
-              description: "Een e-commerce website met te veel navigatie-opties:",
-              options: [
-                "Dames (zelfde grootte als andere items)",
-                "Heren (zelfde grootte als andere items)",
-                "Kinderen (zelfde grootte als andere items)",
-                "Sport (zelfde grootte als andere items)",
-                "Sale (zelfde grootte als andere items)",
-                "Nieuw (zelfde grootte als andere items)",
-                "Merken (zelfde grootte als andere items)",
-                "Accessoires (zelfde grootte als andere items)",
-                "Wintercollectie (zelfde grootte als andere items)",
-                "Zomercollectie (zelfde grootte als andere items)",
-                "Schoenen (zelfde grootte als andere items)",
-                "Kleding (zelfde grootte als andere items)",
-                "Tassen (zelfde grootte als andere items)",
-                "Outlet (zelfde grootte als andere items)",
-                "Cadeaus (zelfde grootte als andere items)",
-                "Submenu's verdwijnen bij muisbeweging",
-                "Veel animaties en kleuren in de navigatie",
-                "Geen duidelijke visuele hiërarchie"
-              ],
-              feedback: "Deze navigatiebalk bevat meer dan 15 categorieën zonder duidelijke prioriteit. Alle items hebben dezelfde grootte en stijl, waardoor niets uitspringt. Submenu's die verdwijnen bij muisbeweging zorgen voor frustratie. De vele kleuren en animaties leiden af in plaats van te helpen. Dit resulteert in een hogere bounce-rate en lagere conversies omdat gebruikers overweldigd raken en de site verlaten."
-            },
-            good: {
-              title: "Gestructureerde Navigatiebalk",
-              description: "Een e-commerce website met duidelijke navigatie-hiërarchie:",
-              options: [
-                "Heren (groot, vetgedrukt, contrasterend)",
-                "Dames (groot, vetgedrukt, contrasterend)",
-                "Kinderen (groot, vetgedrukt, contrasterend)",
-                "Sale (groot, vetgedrukt, contrasterend)",
-                "Merken (groot, vetgedrukt, contrasterend)",
-                "Submenu met max. 6 opties per categorie",
-                "Klikbaar menu dat open blijft tot sluiten",
-                "Prominente zoekbalk in de navigatie"
-              ],
-              feedback: "Deze navigatiebalk bevat slechts 5 hoofdcategorieën met duidelijke visuele hiërarchie. De belangrijkste opties zijn vetgedrukt en contrasterend, terwijl minder belangrijke opties in submenu's zijn geplaatst. Elk submenu bevat maximaal 6 opties, wat binnen de cognitieve belastingslimiet valt. Het menu blijft open na klikken, wat gebruikers de tijd geeft om keuzes te maken. De prominente zoekbalk biedt directe toegang voor doelgerichte gebruikers. Dit resulteert in snellere navigatie, minder frustratie en hogere conversies."
-            }
+            type: "ux-visual",
+            subtype: "hicks",
+            title: "Hick's Law in de praktijk",
+            description: "Ervaar zelf hoe het aantal keuzes de beslissingstijd beïnvloedt.",
           },
           {
             type: "interactive",
@@ -210,25 +133,75 @@ export const lessonCategories: Record<string, Category> = {
               "Contact opnemen"
             ],
             categories: [
-              { name: "Account", description: "Persoonlijke accountgegevens en -instellingen" },
-              { name: "Privacy & Beveiliging", description: "Instellingen voor uw privacy en veiligheid" },
-              { name: "Meldingen", description: "Beheer hoe en wanneer u meldingen ontvangt" },
-              { name: "Weergave", description: "Pas het uiterlijk van de app aan" },
-              { name: "Betaling & Abonnementen", description: "Financiële instellingen en abonnementsbeheer" },
-              { name: "Apparaat & Connectiviteit", description: "Apparaat- en verbindingsinstellingen" },
-              { name: "Ondersteuning", description: "Hulp en ondersteuning" }
+              {
+                name: "Account & Privacy",
+                description: "Persoonlijke gegevens en privacy-instellingen"
+              },
+              {
+                name: "Notificaties",
+                description: "Meldingen en communicatie-instellingen"
+              },
+              {
+                name: "Weergave",
+                description: "Visuele en taal-instellingen"
+              },
+              {
+                name: "Betalingen",
+                description: "Betaalmethodes en abonnementen"
+              },
+              {
+                name: "Apparaat",
+                description: "Hardware en verbindingsinstellingen"
+              },
+              {
+                name: "Help & Support",
+                description: "Hulp en contactmogelijkheden"
+              }
             ],
             solution: {
-              "Account": ["Account gegevens", "Wachtwoord wijzigen", "E-mail adres wijzigen", "Profielfoto"],
-              "Privacy & Beveiliging": ["Privacyinstellingen", "Zichtbaarheid profiel", "Gegevens downloaden", "Account verwijderen"],
-              "Meldingen": ["Pushmeldingen", "E-mailnotificaties", "SMS-meldingen", "Stille modus"],
-              "Weergave": ["Taal instellen", "Thema wijzigen", "Tekstgrootte", "Contrast"],
-              "Betaling & Abonnementen": ["Betaalmethodes", "Factureringsgeschiedenis", "Abonnementen", "Kortingscodes"],
-              "Apparaat & Connectiviteit": ["Apparaatbeheer", "Verbindingen", "Bluetooth", "Wifi-instellingen"],
-              "Ondersteuning": ["Helpcentrum", "Feedback geven", "Veelgestelde vragen", "Contact opnemen"]
+              "Account & Privacy": [
+                "Account gegevens",
+                "Wachtwoord wijzigen",
+                "E-mail adres wijzigen",
+                "Profielfoto",
+                "Privacyinstellingen",
+                "Zichtbaarheid profiel",
+                "Gegevens downloaden",
+                "Account verwijderen"
+              ],
+              "Notificaties": [
+                "Pushmeldingen",
+                "E-mailnotificaties",
+                "SMS-meldingen",
+                "Stille modus"
+              ],
+              "Weergave": [
+                "Taal instellen",
+                "Thema wijzigen",
+                "Tekstgrootte",
+                "Contrast"
+              ],
+              "Betalingen": [
+                "Betaalmethodes",
+                "Factureringsgeschiedenis",
+                "Abonnementen",
+                "Kortingscodes"
+              ],
+              "Apparaat": [
+                "Apparaatbeheer",
+                "Verbindingen",
+                "Bluetooth",
+                "Wifi-instellingen"
+              ],
+              "Help & Support": [
+                "Helpcentrum",
+                "Feedback geven",
+                "Veelgestelde vragen",
+                "Contact opnemen"
+              ]
             },
             feedback: {
-              correct: "Uitstekend! Je hebt de gebruikerservaring van SuperApp aanzienlijk verbeterd. Door de 28 instellingen te groeperen in 7 logische categorieën, heb je de cognitieve belasting verminderd. Gebruikers hoeven nu eerst maar uit 7 opties te kiezen in plaats van uit 28. Binnen elke categorie zijn de opties ook beperkt tot 4 items, wat binnen de aanbevolen limiet van 7±2 valt. Uit gebruikerstests blijkt dat de tijd om een instelling te vinden met 64% is afgenomen en de gebruikerstevredenheid met 42% is gestegen. Deze toepassing van Hick's Law maakt de interface veel gebruiksvriendelijker en versnelt de beslissingstijd.",
+              correct: "Uitstekend! Je hebt de gebruikerservaring van SuperApp aanzienlijk verbeterd. Door de 28 instellingen te groeperen in 6 logische categorieën, heb je de cognitieve belasting verminderd. Gebruikers hoeven nu eerst maar uit 6 opties te kiezen in plaats van uit 28. Binnen elke categorie zijn de opties ook beperkt tot 4-8 items, wat binnen de aanbevolen limiet van 7±2 valt. Uit gebruikerstests blijkt dat de tijd om een instelling te vinden met 64% is afgenomen en de gebruikerstevredenheid met 42% is gestegen. Deze toepassing van Hick's Law maakt de interface veel gebruiksvriendelijker en versnelt de beslissingstijd.",
               incorrect: "Je bent op de goede weg, maar sommige items staan nog niet in de meest logische categorie. Gebruikerstests tonen aan dat mensen bepaalde instellingen niet kunnen vinden in de categorieën waar jij ze hebt geplaatst. Probeer opnieuw door te denken aan welke items natuurlijk bij elkaar horen en hoe een gebruiker zou zoeken naar deze opties."
             }
           }
@@ -237,105 +210,50 @@ export const lessonCategories: Record<string, Category> = {
       {
         id: "3-2",
         title: "Fitts's Law",
+        description: "De tijd die nodig is om een doel te bereiken hangt af van de afstand tot het doel en de grootte van het doel.",
+        category: "ux-principles",
         examples: [
           {
-            type: "scenario",
-            question: "Welke interface is makkelijker te gebruiken op een mobiel apparaat?",
-            explanation: "Fitts's Law stelt dat de tijd om een doel te bereiken afhankelijk is van de afstand en grootte van het doel.",
-            bad: {
-              title: "Kleine, Verspreide Knoppen",
-              description: "Een mobiele interface met:",
-              options: [
-                "Kleine knoppen (10x10px)",
-                "Ver uit elkaar geplaatst",
-                "Moeilijk bereikbare hoeken",
-                "Inconsistente groottes"
-              ],
-              feedback: "Kleine, verspreide knoppen zijn moeilijk om nauwkeurig aan te raken."
-            },
-            good: {
-              title: "Optimale Knopplaatsing",
-              description: "Een mobiele interface met:",
-              options: [
-                "Grote knoppen (min. 44x44px)",
-                "Gegroepeerd in bereikbare zones",
-                "Consistent formaat",
-                "Voldoende ruimte tussen knoppen"
-              ],
-              feedback: "Grote, goed geplaatste knoppen zijn makkelijk aan te raken."
-            }
-          }
-        ]
+            type: "ux-visual",
+            subtype: "fitts",
+            title: "Fitts's Law in de praktijk",
+            description: "Ervaar zelf hoe de grootte en afstand van doelen de gebruiksvriendelijkheid beïnvloeden.",
+          },
+        ],
       },
       {
         id: "3-3",
         title: "Jakob's Law",
+        description: "Gebruikers brengen het grootste deel van hun tijd door op andere websites. Ze verwachten dat jouw website op dezelfde manier werkt als de andere websites die ze kennen.",
+        category: "ux-principles",
         examples: [
           {
-            type: "scenario",
-            question: "Welke gebruikerservaring zal een betere indruk achterlaten?",
-            explanation: "De Peak-End Rule stelt dat mensen een ervaring vooral beoordelen op basis van het hoogtepunt en het einde.",
-            bad: {
-              title: "Standaard Checkout",
-              description: "Een webshop checkout die eindigt met:",
-              options: [
-                "Zakelijke bevestigingspagina",
-                "Geen persoonlijke boodschap",
-                "Geen suggesties voor volgende stappen",
-                "Abrupte afsluiting"
-              ],
-              feedback: "Een neutrale afsluiting laat geen blijvende indruk achter."
-            },
-            good: {
-              title: "Memorabele Checkout",
-              description: "Een webshop checkout die eindigt met:",
-              options: [
-                "Persoonlijk bedankje met naam",
-                "Korte animatie of beloning",
-                "Duidelijke vervolgstappen",
-                "Kleine verrassing (kortingscode)"
-              ],
-              feedback: "Een positief einde creëert een blijvende goede herinnering."
-            }
-          }
+            type: "ux-visual",
+            subtype: "jakobs",
+            title: "Jakob's Law in de praktijk",
+            description: "Ervaar zelf hoe gebruikers verwachtingen hebben van interfaces op basis van hun ervaring met andere websites.",
+          },
         ]
       },
       {
         id: "3-4",
         title: "Miller's Law",
+        description: "De gemiddelde persoon kan slechts 7 (±2) items in hun werkgeheugen houden.",
+        category: "ux-principles",
         examples: [
           {
-            type: "scenario",
-            question: "Welke menustructuur is effectiever voor gebruikers?",
-            explanation: "Miller's Law stelt dat mensen ongeveer 7 (±2) items tegelijk in hun werkgeheugen kunnen houden.",
-            bad: {
-              title: "Overbelast Menu",
-              description: "Een navigatiemenu met:",
-              options: [
-                "15 ongerelateerde opties",
-                "Geen logische groepering",
-                "Alle items op hetzelfde niveau",
-                "Complexe terminologie"
-              ],
-              feedback: "Te veel ongerelateerde opties overweldigen gebruikers."
-            },
-            good: {
-              title: "Gestructureerd Menu",
-              description: "Een georganiseerd menu met:",
-              options: [
-                "3-5 hoofdcategorieën",
-                "Logisch gegroepeerde items",
-                "Duidelijke hiërarchie",
-                "Eenvoudige labels"
-              ],
-              feedback: "Gegroepeerde informatie is makkelijker te verwerken en te onthouden."
-            }
-          }
+            type: "ux-visual",
+            subtype: "millers",
+            title: "Miller's Law in de praktijk",
+            description: "Ervaar zelf hoe het beperkte werkgeheugen van gebruikers hun interactie met interfaces beïnvloedt.",
+          },
         ]
       },
       {
         id: "3-5",
         title: "Peak-End Rule",
+        description: "Mensen beoordelen een ervaring vooral op basis van het hoogtepunt en het einde van die ervaring.",
+        category: "ux-principles",
         examples: [
           {
             type: "scenario",
